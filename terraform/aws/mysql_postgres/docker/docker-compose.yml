@@ -1,9 +1,11 @@
 ---
-version: '2.4.4.4.4'
+version: '2.4'
 services:
 
   mysql:
     image: debezium/example-mysql:2.6
+    hostname: mysql
+    container_name: mysql
     ports: 
      - 3306:3306
     environment:
