@@ -16,7 +16,7 @@ create table accounts (
 	address VARCHAR(50),
 	country VARCHAR(50),
     create_ts timestamp DEFAULT CURRENT_TIMESTAMP ,
-    update_ts timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    update_ts timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (account_id)
 );
 
