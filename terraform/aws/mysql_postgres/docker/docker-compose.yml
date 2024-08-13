@@ -1,0 +1,35 @@
+---
+version: '2.4'
+services:
+
+  mysql:
+    image: debezium/example-mysql:2.6
+    hostname: mysql
+    container_name: mysql
+    ports: 
+     - 3306:3306
+    environment:
+     - MYSQL_ROOT_PASSWORD=debezium
+     - MYSQL_USER=mysqluser
+     - MYSQL_PASSWORD=mysqlpw
+    volumes:
+     - ./mysql/accounts.sql:/docker-entrypoint-initdb.d/z99_dump.sql
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres-user
+      POSTGRES_PASSWORD: postgres-pw
+      POSTGRES_DB: customers
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ./postgres/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      # copy the sql script to fill tables
+      - ./postgres/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+  
