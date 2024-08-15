@@ -16,7 +16,7 @@ services:
      - ./mysql/accounts.sql:/docker-entrypoint-initdb.d/z99_dump.sql
 
   postgres:
-    image: debezium/postgres:latest
+    image: debezium/postgres:16
     restart: always
     hostname: postgres
     container_name: postgres
