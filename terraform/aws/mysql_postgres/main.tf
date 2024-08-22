@@ -14,14 +14,14 @@ resource "aws_security_group" "cdcworkshop-mysql-sg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [var.myip]
+    cidr_blocks = var.allowed_cidr_blocks
   }
   # mysql
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [var.myip]
+    cidr_blocks = var.allowed_cidr_blocks
   }
   # outbound internet access
   egress {
@@ -33,7 +33,6 @@ resource "aws_security_group" "cdcworkshop-mysql-sg" {
 }
 resource "aws_instance" "cdc-workshop-mysql-postgres-db" {
   ami           = "${data.aws_ami.ami.id}"
-  count         = var.instance_count
   instance_type = var.instance_type_resource
   key_name      = var.ssh_key_name
   vpc_security_group_ids = ["${aws_security_group.cdcworkshop-mysql-sg.id}"]
@@ -45,7 +44,12 @@ resource "aws_instance" "cdc-workshop-mysql-postgres-db" {
   }
 
   tags = {
-    "Name" = "cdcworkshop-mysql-postgres-instance",
-    "Owner" = "cmutzlitz@confluent.io"
+    "Name" = "cdcworkshop-mysql-postgres-instance-${random_id.id.hex}",
+    "owner_email" = var.owner_email
+  }
+
+  provisioner "local-exec" {
+    command = "bash ./00_create_client.properties.sh ${aws_instance.cdc-workshop-mysql-postgres-db.public_ip}"
+    when = create
   }
 }

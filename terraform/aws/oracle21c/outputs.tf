@@ -2,14 +2,28 @@
 ################# Outputs #################
 ###########################################
 
-output "PublicIPs" {
-  value = tonumber(var.instance_count) >= 1 ? " Public IP Adresses are ${join(",",formatlist("%s", aws_instance.cdcworkshop_oracle21c.*.public_ip),)} " : "AWS is disabled" 
+
+output "A00_instance_details" {
+  description = "oracleDB compute detaisl"
+  value       = aws_instance.cdcworkshop_oracle21c
 }
 
-output "SSH" {
-  value = tonumber(var.instance_count) >= 1 ? " SSH  Access: ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@${join(",",formatlist("%s", aws_instance.cdcworkshop_oracle21c.*.public_ip),)} " : "AWS is disabled" 
+output "A01_PUBLICIP" {
+  description = "oracleDB Public IP"
+  value       = aws_instance.cdcworkshop_oracle21c.public_ip
 }
 
-output "OracleAccess" {
-  value = tonumber(var.instance_count) >= 1 ? " sys/confluent123@ORCLCDB as sysdba or sys/confluent123@ORCLPDB1 as sysdba or ordermgmt/kafka@ORCLPDB1  Port:1521  HOST:${join(",",formatlist("%s", aws_instance.cdcworkshop_oracle21c.*.public_ip),)} " : "AWS is disabled" 
+output "A02_ORACLESERVERNAME" {
+  description = "oracleDB Servername"
+  value       = aws_instance.cdcworkshop_oracle21c.public_ip
 }
+
+output "A03_SSH" {
+  description = "SSH Access"
+  value       = "SSH  Access: ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@${join(",", formatlist("%s", aws_instance.cdcworkshop_oracle21c.public_ip), )} "
+}
+
+output "A04_OracleAccess" {
+  value = "sqlplus sys/confluent123@ORCLCDB as sysdba or sqlplus sys/confluent123@ORCLPDB1 as sysdba or sqlplus ordermgmt/kafka@ORCLPDB1  Port:1521  HOST:${aws_instance.cdcworkshop_oracle21c.public_ip}"
+}
+

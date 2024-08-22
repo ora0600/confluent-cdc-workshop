@@ -1,3 +1,6 @@
+resource "random_id" "id" {
+  byte_length = 2
+}
 # AWS Config
 variable "aws_access_key" {
 }
@@ -15,17 +18,17 @@ variable "instance_type_resource" {
   default = "t2.xlarge"
 }
 
-variable "instance_count" {
-    default = "1"
-  }
-
 variable "myip" {
-  }
+}
 
 variable "ami_oracle21c" {
-  }
+}
 
+variable "allowed_cidr_blocks" {
+  description = "(Required) A comma separated list of CIDR blocks allowed to mount target. Add egress static IPs from Confluent Cloud"
+  type        = list(string)
+  default     = ["0.0.0.0/32"]
+}
 
-variable "oracledbdemo" {
-  default = "https://github.com/ora0600/confluent-ksqldb-hands-on-workshop/archive/master.zip"
+variable "owner_email" {
 }

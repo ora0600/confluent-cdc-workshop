@@ -1,5 +1,7 @@
 # Build AWS Compute and install Oracle on Docker, create an AMI and use it then later with terraform
 
+This is a manual step guide, how to build an Oracle environment for AWS with docker. Please follow the license rules from Oracle.
+
 1. Create AWS Compute [Key Pairs](https://eu-central-1.console.aws.amazon.com/ec2/home?region=eu-central-1#KeyPairs:):
    Name: workshopkey
    Key Pair type: RSA
@@ -222,7 +224,8 @@ exit;
 exit
 ```
 
-Database is prepared
+## Database is prepared
+
 check external access with sql developer I am running version 23.1
 I do create two connections in sqldeveloper
 1. oracle21c aws PDB1 as sysdba CDC
@@ -236,7 +239,7 @@ I do create two connections in sqldeveloper
    User: sys
    PW: yourPassword
    Connection type: BASIC
-   HOST: 18.153.83.27
+   HOST: PUB-IP
    Port: 1521
    service name: ORCLCDB
 3. oracle21c aws PDB1 as ordermgmt CDC
@@ -245,7 +248,7 @@ I do create two connections in sqldeveloper
    Connection type: BASIC
    HOST: PUB-IP
    Port: 1521
-   service name: ORCLPDB1   
+   service name: ORCLPDB1
 
 Database should work also outside Compute Instance.
 
@@ -260,22 +263,22 @@ sudo docker image ls
 
 ## Create AMI from Compute Instance
 
-Now store AMI image from compute service, so that we can create a new compute with everything implemented by terraform
+Now store AMI image from compute service console, so that we can create a new compute with everything implemented by terraform
 * Go to the AWS console
 * go to your EC2 dashboard : in the instances list
-* select your instance, right click on your instance
-* selecct image and Template -> create image
-* Give AMI a 
-  Name: oracle21c-ami-image-for-CDC
-  Description: oracle21c-ami-image-for-CDC
-  Add tags:
-  owner=cmutzlitz@confluent.io
-  content=oracle21-ee
-AMI NAME: oracle21c-ami-image-for-CDC
-AMI ID: ami-XXXXXX
-Change NAME: oracle21c_ami4CDC 
+   * select your instance, right click on your instance
+   * select image and Template -> create image
+   * Give AMI a 
+      Name: oracle21c-ami-image-for-CDC
+      Description: oracle21c-ami-image-for-CDC
+      Add tags:
+      owner_email=YOU EMAIL
+      content=oracle21-ee
+      AMI NAME: oracle21c-ami-image-for-CDC
+      AMI ID: ami-XXXXXX
+      Change NAME: oracle21c_ami4CDC 
 
-Now, you can use the AMI with terraform. Juster the AMO ID into `env-vars`:
+Now, you can use the AMI with terraform. Just enter AMI ID into `.accounts`:
 
 ```bash
 export TF_VAR_ami_oracle21c=ami-XXXXXXX
@@ -283,3 +286,5 @@ export TF_VAR_ami_oracle21c=ami-XXXXXXX
 
 To share with other AWS accounts [follow the link]( https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharingamis-explicit.html)
 It takes a while till image is created, check AMI status in aws console.
+
+back to [Deployment-Steps Overview](../README.MD)

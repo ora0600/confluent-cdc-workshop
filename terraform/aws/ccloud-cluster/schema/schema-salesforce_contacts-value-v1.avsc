@@ -1,0 +1,679 @@
+{
+  "connect.name": "io.confluent.salesforce.ContactChangeEvent",
+  "fields": [
+    {
+      "name": "Id",
+      "type": {
+        "connect.doc": "Unique identifier for the object.",
+        "type": "string"
+      }
+    },
+    {
+      "default": null,
+      "name": "ReplayId",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "ChangeEventHeader",
+      "type": {
+        "connect.name": "ChangeEventHeader",
+        "fields": [
+          {
+            "default": null,
+            "name": "entityName",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          {
+            "default": null,
+            "name": "recordIds",
+            "type": [
+              "null",
+              {
+                "items": "string",
+                "type": "array"
+              }
+            ]
+          },
+          {
+            "default": null,
+            "name": "changeType",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          {
+            "default": null,
+            "name": "changedFields",
+            "type": [
+              "null",
+              {
+                "items": "string",
+                "type": "array"
+              }
+            ]
+          },
+          {
+            "default": null,
+            "name": "changeOrigin",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          {
+            "default": null,
+            "name": "transactionKey",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          {
+            "default": null,
+            "name": "sequenceNumber",
+            "type": [
+              "null",
+              "long"
+            ]
+          },
+          {
+            "default": null,
+            "name": "commitTimestamp",
+            "type": [
+              "null",
+              "long"
+            ]
+          },
+          {
+            "default": null,
+            "name": "commitUser",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          {
+            "default": null,
+            "name": "commitNumber",
+            "type": [
+              "null",
+              "long"
+            ]
+          }
+        ],
+        "name": "ChangeEventHeader",
+        "namespace": "",
+        "type": "record"
+      }
+    },
+    {
+      "default": null,
+      "name": "AccountId",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "LastName",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "FirstName",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Salutation",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Name",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherStreet",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherCity",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherState",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherPostalCode",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherCountry",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherLatitude",
+      "type": [
+        "null",
+        "double"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherLongitude",
+      "type": [
+        "null",
+        "double"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherGeocodeAccuracy",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherAddress",
+      "type": [
+        "null",
+        {
+          "connect.name": "io.confluent.salesforce.Address",
+          "fields": [
+            {
+              "default": null,
+              "name": "GeocodeAccuracy",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "default": null,
+              "name": "State",
+              "type": [
+                "null",
+                {
+                  "connect.doc": "",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "default": null,
+              "name": "Street",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "default": null,
+              "name": "PostalCode",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "default": null,
+              "name": "Country",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "default": null,
+              "name": "Latitude",
+              "type": [
+                "null",
+                "double"
+              ]
+            },
+            {
+              "default": null,
+              "name": "City",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "default": null,
+              "name": "Longitude",
+              "type": [
+                "null",
+                "double"
+              ]
+            },
+            {
+              "default": null,
+              "name": "CountryCode",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "default": null,
+              "name": "StateCode",
+              "type": [
+                "null",
+                "string"
+              ]
+            }
+          ],
+          "name": "Address",
+          "type": "record"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingStreet",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingCity",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingState",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingPostalCode",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingCountry",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingLatitude",
+      "type": [
+        "null",
+        "double"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingLongitude",
+      "type": [
+        "null",
+        "double"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingGeocodeAccuracy",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MailingAddress",
+      "type": [
+        "null",
+        "Address"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Phone",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Fax",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "MobilePhone",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "HomePhone",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OtherPhone",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "AssistantPhone",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "ReportsToId",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Email",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Title",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Department",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "AssistantName",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "LeadSource",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Birthdate",
+      "type": [
+        "null",
+        {
+          "connect.name": "org.apache.kafka.connect.data.Date",
+          "connect.version": 1,
+          "logicalType": "date",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "Description",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "OwnerId",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "CreatedDate",
+      "type": [
+        "null",
+        {
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "connect.version": 1,
+          "logicalType": "timestamp-millis",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "CreatedById",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "LastModifiedDate",
+      "type": [
+        "null",
+        {
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "connect.version": 1,
+          "logicalType": "timestamp-millis",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "LastModifiedById",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "LastCURequestDate",
+      "type": [
+        "null",
+        {
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "connect.version": 1,
+          "logicalType": "timestamp-millis",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "LastCUUpdateDate",
+      "type": [
+        "null",
+        {
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "connect.version": 1,
+          "logicalType": "timestamp-millis",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "EmailBouncedReason",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "EmailBouncedDate",
+      "type": [
+        "null",
+        {
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "connect.version": 1,
+          "logicalType": "timestamp-millis",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "default": null,
+      "name": "Jigsaw",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "JigsawContactId",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "CleanStatus",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "IndividualId",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "ContactSource",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Level__c",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "Languages__c",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "_ObjectType",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "default": null,
+      "name": "_EventType",
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  ],
+  "name": "ContactChangeEvent",
+  "namespace": "io.confluent.salesforce",
+  "type": "record"
+}

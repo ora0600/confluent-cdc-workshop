@@ -38,4 +38,3 @@ rm -rf confluent-cdc-workshop-main/
 # run docker compose
 cd docker
 docker-compose up -d
-

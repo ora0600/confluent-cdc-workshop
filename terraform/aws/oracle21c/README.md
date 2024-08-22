@@ -1,71 +1,65 @@
 # Oracle DB Enterprise Edition running on AWS as docker container
 
-I did prepare an AWS AMI with an Oracle 21c including all data, permissions etc. we need for a CDC Workshop with the Confluent Oracle CDC Source Connector. To create this AMI you need to follow the [manual step](manualstep.md) or ask Confluent for help.
+I did prepare an AWS AMI with an Oracle 21c DB including all data, permissions etc. Have such an image is better to run a DB Service very fast within a compute service. This workshop is expecting that you have prepared such a image. To create this AMI you need to follow these [manual steps](manualstep.md) or ask Confluent for help.
 
-## Prerequisites
+## Prerequisites for this build
 
-* Having an AWS Account, with AWS Key and Secret
-* having AWS compute key pair created
-* Having an AMI prepared with all the software documented in [manual step](manualstep.md). Ask Confluent to enable a correct AMI for you. If you are Confluent employee check AMIs in Region Frankfurt with name `oracle21c_ami4CDC`
+* Having an AWS Account, with AWS Key and Secret, see [manage access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). My AWS access key has these permission policies aligned: AdministratorAccess, AmazonEC3FullAccess, AmazonS3FullAccess and AmazonRedshiftFullAccess
+* having AWS compute key pair created (for the SSH Access) see [AWS docu](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html)
+* Having an AMI prepared with all the software documented in [manual step](manualstep.md). Ask Confluent to enable a correct AMI for you.
 * terraform installed (I am running v.1.6.6)
-* knowing your current Public IP Address, see [my IP](https://www.myip.com/)
+* knowing your current Public IP Address, see [my IP](https://www.myip.com/) and the EGRESS IP List from Confluent cloud. This will be automatically added in `.aws_env`file.
 * Accept the OTN License (for playing with Oracle), see [OTN License](https://www.oracle.com/downloads/licenses/standard-license.html)
-* optional you could run SQL Developer on your desktop
+* optional you could run SQL Developer and SQL*Plus on your desktop
 
+## Deployment
 
-## Getting Started
-
-Before executing terraform for oracle21c-lab-environment deployment, change the [env-var.sample](env-vars.sample) and store it as `env-vars`.
-Add your aws_access_key, aws_secret_key. aws_region, myip and AMI ID and as well your own ssh private key should be used. see ssh_key_name:.
+Deploy the Oracle DB Service via terraform:
 
 ```bash
-# change to your values
-cat > $PWD/env-vars <<EOF
-export TF_VAR_aws_access_key=AWSKEY
-export TF_VAR_aws_secret_key=AWSSECRET
-export TF_VAR_aws_region=eu-central-1
-export TF_VAR_ssh_key_name=cdcworkshop
-export TF_VAR_instance_count=1
-export TF_VAR_myip=X.Y.X.Y/32
-export TF_VAR_ami_oracle21c=ami-YOURAMIID
-EOF
-
-# Run terraform
-cd terraform/aws/oracle21c
-source env-vars
-terraform init
+cd ../oracle21
+source .aws_env
+terraform init 
 terraform plan
 terraform apply
-```
+``` 
 
-> If you need more than one instance of compute services, e.g. want to give the workshop attendees each on DB
-> set the TF_VAR_instance_count variable to the amount of attendees.
-
-Terraform will deploy the complete oracledb12c compute service and start the docker container.
-The output of terraform will show you all the endpoints for you database access:
+If you did deploy successfully with terraform you will get the following output:
 
 ```bash
-Outputs:
-
-OracleAccess = " sys/PW@ORCLCDB as sysdba or sys/PW@ORCLPDB1 as sysdba or ordermgmt/PW@ORCLPDB1  Port:1521  HOST:PUB-IP "
-PublicIPs = " Public IP Adresses are PUB-IP "
-SSH = " SSH  Access: ssh -i ~/keys/yourpriv.pem ec2-user@PUB-IP "
+# Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+# Outputs:
+# A00_instance_details = {
+#  "ami" = "
+#  ...
+# A01_PUBLICIP = "x.x.x.x"
+# A02_ORACLESERVERNAME = "ec2-x-x-x-x.eu-central-1.compute.amazonaws.com"
+# A03_SSH = "SSH  Access: ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@18.195.50.248 "
+# A04_OracleAccess = "sqlplus sys/confluent123@ORCLCDB as sysdba or sqlplus sys/confluent123@ORCLPDB1 as sysdba or sqlplus ordermgmt/kafka@ORCLPDB1  # Port:1521  HOST:x.x.x.x"
 ```
 
-It takes a little while till everything is up and running in aws compute instance. 
+It takes a little while till everything is up and running in aws compute instance. The database has to start etc. 
 Login into cloud compute instance via ssh and check status:
 
 ```bash 
-ssh -i ~/keys/yourawskeypair-private.pem ec2-user@PUB-IP
+ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
 echo $LD_LIBRARY_PATH
 echo $PATH
-sudo docker images ls
 sudo docker ps
 # CONTAINER ID     IMAGE                       COMMAND                  CREATED       ...
-# 3c8c05402956     oracle/database:21.3.0-ee   "/bin/sh -c 'exec $O…"   6 hours ago   ...
+# 3c8c05402956     oracle/database:21.3.0-ee   "/bin/sh -c 'exec $O…"   2 month ago   ...
 ```
 
-If docker ps gives you a result (see above), than your DB is running. You need not to execute 1. and 2.
+In the compute service after login via ssh: `ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@PUBIP` you use SQL*Plus
+
+* `sqlplus sys/confluent123@ORCLCDB as sysdba` or 
+* `sqlplus sys/confluent123@ORCLPDB1 as sysdba` or 
+* `sqlplus ordermgmt/kafka@ORCLPDB1`
+
+Port is always 1521 and HOST is the public IP address of the compute service.
+
+If docker ps gives you a result (see above), than your DB is running. You need not to execute the next 1. and 2.
+
 1. The Oracle DB should run as container. If not do the following:
 
 ```bash
@@ -87,40 +81,37 @@ docker run \
 -d oracle/database:21.3.0-ee
 ```
 
-With running database you should have to access now via SQL Developer and sqlplus (on aws compute).
+With a running database you should have to access now also SQL Developer (on your desktop) and sqlplus (on aws compute or Desktop).
 
 ```bash
 # AWS Compute via SSH login
-ssh -i ~/keys/yourkey.pem ec2-user@PUB-IP
+ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
 # try sysdba to CDB
-sqlplus sys/PW@ORCLCDB as sysdba 
+sqlplus sys/confluent123@ORCLCDB as sysdba 
+SQL> show pdbs;
+SQL> exit;
 # try sysdba to PDB
-sqlplus sys/PW@ORCLPDB1 as sysdba
+sqlplus sys/confluent123@ORCLPDB1 as sysdba
+SQL> show pdbs;
 # try local user in PDB
-sqlplus ordermgmt/kafka@ORCLPDB1
+SQL> connect ordermgmt/kafka@ORCLPDB1
+SQL> set lines 200   
+SQL> select * from cat;
+SQL> exit;
 ```
 
-From your desk top use SQL Developer oder SQL*Plus with Easy Connect:
+From your desktop use SQL Developer or SQL*Plus with Easy Connect (this is optional):
 
 ```bash
 # try sysdba to CDB with easy connect
-sqlplus sys/confluent123@//54.93.251.54:1521/ORCLCDB as sysdba
+sqlplus sys/confluent123@//x.x.x.x:1521/ORCLCDB as sysdba
 # try sysdba to PDB
-sqlplus sys/confluent123@//54.93.251.54:1521/ORCLPDB1 as sysdba
+sqlplus sys/confluent123@//x.x.x.x:1521/ORCLPDB1 as sysdba
 # try local user in PDB
-sqlplus ordermgmt/kafka@//54.93.251.54:1521/ORCLPDB1
-```
-# Destroy DB aws compute instance
-
-Destroy the cloud compute DB Service:
-
-```bash
-terraform destroy
+sqlplus ordermgmt/kafka@//x.x.x.x:1521/ORCLPDB1
 ```
 
-# License
+We do have the following data model in Oracle21c ORCLPDB1 implemented. All these tables get CDC-ed by the Oracle CDC Source Connector.
+![DB Model](img/oracle21c_ERM.png)
 
-For Oracle we will use an [OTN License](https://www.oracle.com/downloads/licenses/standard-license.html). 
-"Oracle grants You a nonexclusive, nontransferable, limited license to internally use the Programs, subject to the restrictions stated in this Agreement, only for the purpose of developing, testing, prototyping, and demonstrating Your application and only as long as Your application has not been used for any data processing, business, commercial, or production purposes, and not for any other purpose."
-
-For AWS Compute Instance you need a working account.
+back to [Deployment-Steps Overview](../README.MD) or continue with the [Oracle CDC Connector](../ccloud-source-oracle-cdc-connector/README.md)
