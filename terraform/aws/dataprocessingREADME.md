@@ -74,7 +74,7 @@ The Flink Navigator shows all tables available to work with:
 We transform the table contacts and products first. New Table for Oracle contacts
 
 ```SQL
-select * from `ORCLPDB1.ORDERMGMT.CONTACTS`;
+select * from `XEPDB1.ORDERMGMT.CONTACTS`;
 ```
 
 Prepare transformed view:
@@ -86,7 +86,7 @@ CREATE TABLE oracle_mycontacts(saluation STRING, firstname STRING,lastname STRIN
 New Table for Oracle Products, check first the table-topic content:
 
 ```SQL
-select * from `ORCLPDB1.ORDERMGMT.PRODUCTS`;
+select * from `XEPDB1.ORDERMGMT.PRODUCTS`;
 ```
 
 Create the transformed table for products including a new column filled by openAI.
@@ -98,7 +98,7 @@ CREATE TABLE oracle_products(PRODUCT_NAME STRING, DESCRIPTION STRING, LIST_PRICE
 Then please create the job to fill the new tables. Start with Contacts;
 
 ```SQL
-INSERT into oracle_mycontacts SELECT 'Mrs./Mr.', FIRST_NAME, LAST_NAME, EMAIL FROM `ORCLPDB1.ORDERMGMT.CONTACTS`;
+INSERT into oracle_mycontacts SELECT 'Mrs./Mr.', FIRST_NAME, LAST_NAME, EMAIL FROM `XEPDB1.ORDERMGMT.CONTACTS`;
 ```
 
 Check the outcome:
@@ -124,7 +124,7 @@ describe model cdcproductgenai_openai_model;
 Then create the fill job, with integrated openAI Call.
 
 ```SQL
-INSERT into oracle_products SELECT PRODUCT_NAME, DESCRIPTION, LIST_PRICE, response FROM `ORCLPDB1.ORDERMGMT.PRODUCTS`, LATERAL TABLE(ML_PREDICT('cdcproductgenai_openai_model', concat(PRODUCT_NAME,' ',DESCRIPTION)));
+INSERT into oracle_products SELECT PRODUCT_NAME, DESCRIPTION, LIST_PRICE, response FROM `XEPDB1.ORDERMGMT.PRODUCTS`, LATERAL TABLE(ML_PREDICT('cdcproductgenai_openai_model', concat(PRODUCT_NAME,' ',DESCRIPTION)));
 ```
 
 Check the results: The nice Selling Information should now visible for you.
