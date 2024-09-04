@@ -34,7 +34,7 @@ terraform destroy
 rm .ccloud_env
 
 echo "oracle DB Service"
-cd ../oracle21c
+cd ../oraclexe21c
 source .aws_env
 terraform destroy
 rm .aws_env

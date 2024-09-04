@@ -24,6 +24,6 @@ output "A03_SSH" {
 }
 
 output "A04_OracleAccess" {
-  value = "sqlplus sys/confluent123@ORCLCDB as sysdba or sqlplus sys/confluent123@ORCLPDB1 as sysdba or sqlplus ordermgmt/kafka@ORCLPDB1  Port:1521  HOST:${aws_instance.cdcworkshop_oracle21c.public_ip}"
+  value = "sqlplus sys/confluent123@XE as sysdba or sqlplus sys/confluent123@XEPDB1 as sysdba or sqlplus ordermgmt/kafka@XEPDB1  Port:1521  HOST:${aws_instance.cdcworkshop_oracle21c.public_ip}"
 }
 

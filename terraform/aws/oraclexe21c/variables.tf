@@ -21,7 +21,8 @@ variable "instance_type_resource" {
 variable "myip" {
 }
 
-variable "ami_oracle21c" {
+variable "confluentcdcsetup" {
+  default = "https://github.com/ora0600/confluent-cdc-workshop/archive/refs/heads/main.zip"
 }
 
 variable "allowed_cidr_blocks" {

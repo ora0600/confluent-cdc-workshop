@@ -53,7 +53,7 @@ However, **you are all invited to contribute your own ideas**.
 
 * [install](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) terraform (my version v.1.6)
 * You will find additional information for preparation in the relevant guides for the respective cloud providers ([**AWS**](terraform/aws/README.md),[**GCP**](terraform/gcp/README.md), [**Azure**](terraform/azure/README.md)).
-* Next action is: clone the github repo onto you Desktop:
+* Next action is: clone the github repo onto you Desktop and start:
 
 ```bash
 git clone https://github.com/ora0600/confluent-cdc-workshop.git
@@ -64,16 +64,18 @@ git clone https://github.com/ora0600/confluent-cdc-workshop.git
 The hands-on workshop is prepared with a step-by-step guide for the following cloud providers:
 
 * [**AWS**](terraform/aws/README.md): Start here if AWS is your first choice
-* [**GCP**](terraform/gcp/README.md): Start here if GCP is your first choice
-* [**Azure**](terraform/azure/README.md): Start here if Azure is your first choice
+* [**GCP**](terraform/gcp/README.md): Start here if GCP is your first choice (coming soon)
+* [**Azure**](terraform/azure/README.md): Start here if Azure is your first choice (coming soon)
 
-The architecture may seem complex at first, but the workshop is very well-prepared and easy to follow.
+The architecture may seem complex at first, but the workshop is very well-prepared and easy to follow and easy to execute.
 
 ## Feature List
 
 In the workshop we will use and show several features
 
+* Easy use of Cloud Services
 * Easy deployment with Terraform  
+* Data Streaming Platform in general with streming pipelines implemented
 * Easy integration with fully-managed Source CDC connectors
 * Easy integration with fully-managed Sink connectors
 * Schema Registry for ensuring data compatibility and consistency across systems (Focus AVRO Format)
@@ -87,8 +89,9 @@ In the workshop we will use and show several features
 
 No licenses are required for this workshop.
 
-* For the **Oracle DB**, we use the [OTN License](https://www.oracle.com/downloads/licenses/standard-license.html).
+* For the **Oracle DB**, we use the [OTN License](https://www.oracle.com/downloads/licenses/standard-license.html). In our workshop we use the free Oracle 21c XE Edition.
 * For **Salesforce**, we use a Developer Account which is free of charge.
 * We need a cloud account with an appropriate subscription (**AWS, GCP, or Azure**). The costs for this are minimal, as we use storage services, DWH services, and compute services for a few hours. You can try to get a free account with a small budget ([Aws Free Tier Account](https://aws.amazon.com/free/), [GCP Free Account](https://cloud.google.com/free/), [Azure Free Account](https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account?icid=azurefreeaccount)). But please be aware that Free Account does not mean, everything is for free. It is the case that e.g. our Compute shapes in this workshop do not belong to free tier because the shape is not included.
 * A subscription is also required for **Confluent Cloud**, though a demo account can be used. Confluent offers $400 for free. This is more than enough for our workshop. [Confluent Cloud Free Account](https://www.confluent.io/confluent-cloud/tryfree/)
 * **PostgreSQL and MySQL** are used as open-source components.
+

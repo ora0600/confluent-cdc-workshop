@@ -31,7 +31,6 @@ export aws_access_key=\"KEY\"
 export aws_secret_key=\"SECRET\"
 export aws_region=\"eu-central-1\"
 export ssh_key_name=\"cmawskeycdcworkshop\"
-export ami_oracle21c=\"ami-YOURIMAGE-OR-ASK-CONFLUENT\"
 export owner_email=\"Your Email, will be tagged to compute\"
 export bucket_name=\"cdc-workshop\"
 # Salesforce
@@ -57,7 +56,6 @@ export OPENAI_API_KEY=\"sk-YOURKEY\"" > ../.accounts
 * aws_secret_key: AWS User Key secret
 * aws_region: Region in AWS should be same like TF_VAR_cc_cloud_region, but is not enforced could also another region
 * ssh_key_name: Name of the compute ssh key, we will use. AWS owns the public key and you need the private key, create it before AWS deployment
-* ami_oracle21c: The name of the Oracle AMI Image. If you can't create it by yourself, please ask Confluent
 * owner_email: Every AWS Resource will get a tag owner_email with email you mentioned here
 * bucket_name: S3 bucket name
 * sf_user: Your Salesforce user
@@ -78,7 +76,7 @@ How to deploy the cloud resources:
 1. Start with Confluent Cluster deployment:
    Please follow this [guide](ccloud-cluster/README.md). Use the Confluent cloud Console, to check what was deployed.
 2. Deploy the Oracle 21c DB service in AWS Compute
-   Please follow this [guide](oracle21c/README.md). The service need a while to get up and running.
+   Please follow this [guide](oraclexe21c/README.md). The service need a while to get up and running.
 3. Deploy all Oracle CDC Source Connector
    Please follow this [guide](ccloud-source-oracle-cdc-connector/README.md). The creation of the Oracle CDC Connector takes a couple of minutes. Please check in Confluent Cloud Console the status.
 4. Deploy the other DB services in AWS (mysql and postgreSQL)
@@ -92,7 +90,8 @@ How to deploy the cloud resources:
 8. Data processing with Flink SQL
    This is the main part of the Hands-on Workshop. We will transform, mask and more within the data processing part. Instruction Guide is [here](dataprocessingREADME.md).
 9. Sink new data to Sink services with deployed Sink Connectors (S3, Redshift). We will start with S3. Follow [S3 setup](). Then the setup for [Redshift]().
-10. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, follow this [guide](advanced_recordgeneration.md),
+10. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, follow this [guide](advanced_recordgeneration.md)
+11. (optional): Migrate Connectors, this is very important to move self-managed connectors to fully-managed connectors, and also for replay. follow this [guide](connector_migration.md)
 
 If you did implement all components then we run 6 Connectors (4 Source, 2 Sink)
 ![All connectors](img/all_connectors.png)

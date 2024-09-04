@@ -14,3 +14,5 @@ grant create session to ordermgmt;
 
 -- give right to write data to tablespace
 alter user ordermgmt quota 50m on USERS;
+
+exit;

@@ -27,7 +27,7 @@ resource "aws_security_group" "cdcworkshop_oracle21c-sg" {
 #"${data.aws_ami.ami.id}"
 
 resource "aws_instance" "cdcworkshop_oracle21c" {
-  ami                    = var.ami_oracle21c
+  ami                    = "${data.aws_ami.ami.id}"
   instance_type          = var.instance_type_resource
   key_name               = var.ssh_key_name
   vpc_security_group_ids = ["${aws_security_group.cdcworkshop_oracle21c-sg.id}"]
