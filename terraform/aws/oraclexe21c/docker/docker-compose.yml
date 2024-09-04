@@ -1,8 +1,8 @@
-version: '2'
+version: '2.4.4.4.4'
 services:
   database:
     container_name: oracle21c
-    image: container-registry.oracle.com/database/express:21.3.0-xe #oracle/database:21.3.0-xe # e.g: registry.company.br/oracle/database:12.1.0.2-ee
+    image: container-registry.oracle.com/database/express:21.3.0-xe
     environment:
       - name=oracle21c
       - ORACLE_SID=XE
@@ -14,7 +14,6 @@ services:
     volumes:
       - /opt/oracle/oradata # persistent oracle database data.
       - ./scripts:/opt/oracle/scripts/setup # Prepare DB for Confluent CDC and install sample data
-      #- ./data-bridge:/data-bridge # just to have someplace to put data into the running container if needed
     ports:
       - 1521:1521
       - 8080:8080
