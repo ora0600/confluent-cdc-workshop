@@ -42,19 +42,17 @@ Login into cloud compute instance via ssh and check status:
 
 ```bash 
 ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
-# first check if instance is finished with preparation
+# first check if instance is finished with preparation, if you see finish, then everything should be complete
 sudo tail -f /var/log/cloud-init-output.log 
 
 # Execute into container
-docker exec -it oracle21c /bin/bash
+cd docker
+sudo docker exec -it oracle21c /bin/bash
 # Check if oracle Processes run XE_xxxx_XE
 ps -ef | grep ora
 
 # Check status listner
 lsnrctl status
-
-# Install 
-bash /opt/oracle/scripts/setup/00_setup_cdc.sh
 
 # Connect as sysdba
 sqlplus sys/confluent123@XE as sysdba
@@ -64,9 +62,6 @@ SQL> archive log list;
 SQL> connect ordermgmt/kafka@XEPDB1
 SQL> select * from cat;
 SQL> exit;
-
-# Check status listner
-lsnrctl status
 ```
 
 Port is always 1521 and HOST is the public IP address of the compute service.

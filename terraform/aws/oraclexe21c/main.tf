@@ -32,6 +32,11 @@ resource "aws_instance" "cdcworkshop_oracle21c" {
   key_name               = var.ssh_key_name
   vpc_security_group_ids = ["${aws_security_group.cdcworkshop_oracle21c-sg.id}"]
   user_data              = data.template_file.oracle_instance.rendered
+  
+  root_block_device {
+    volume_type = "gp2"
+    volume_size = 100
+  }
 
   tags = {
     "Name"        = "cdcworkshop-oracle21c-${random_id.id.hex}",
