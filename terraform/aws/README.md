@@ -10,7 +10,7 @@ The preparations are very important and need your attention.
 
 * Confluent Cloud account([Sign-up](https://www.confluent.io/confluent-cloud/tryfree/)) and [Confluent Cloud API Key](https://www.confluent.io/blog/confluent-terraform-provider-intro/#api-key)
 * AWS account ([Sign-up](https://aws.amazon.com/free/)) and [Create an AWS IAM User Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).  And finally create a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html) for your Amazon EC2 instance
-* create your own image for Oracle 21c service (see [guide](oracle21c/manualstep.md)) or ask us for help
+* create your own image for Oracle 21c service (see [guide](oraclexe21c/README.md)) or ask us for help
 * Salesforce account and configuration for using CDC. Create a Salesforce Developer account [Sign-up](https://developer.salesforce.com/signup). Configure Salesforce CDC, follow [my setup with screenshots](ccloud-source-salesforce-cdc-connector/setup_salesforce.md) or use [Confluent Documentation](https://docs.confluent.io/cloud/current/connectors/cc-salesforce-source-cdc.html#quick-start)
 * openAI Account ([Sign-up](https://platform.openai.com/signup/)) and [API Key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key)
 
