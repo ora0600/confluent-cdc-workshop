@@ -16,7 +16,7 @@ I did prepare an AWS Compute Service running with an Oracle 21 XE Docker image.
 Deploy the Oracle DB Service via terraform:
 
 ```bash
-cd ../oraclexe21
+cd ../oraclexe21c
 source .aws_env
 terraform init 
 terraform plan
