@@ -3,7 +3,6 @@ services:
   database:
     container_name: oracle21c
     image: container-registry.oracle.com/database/express:21.3.0-xe
-    environment:
       - name=oracle21c
       - ORACLE_SID=XE
       - ORACLE_PDB=XEPDB1

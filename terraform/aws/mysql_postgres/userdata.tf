@@ -1,5 +1,5 @@
 #########################################################
-######## Confluent Kafka-Rest 5.3 Dev Instance ##########
+######## Confluent CDC Workshop DB Instance ##########
 #########################################################
 
 data "template_file" "confluent_instance" {

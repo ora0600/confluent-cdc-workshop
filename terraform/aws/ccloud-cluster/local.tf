@@ -14,7 +14,7 @@ resource "null_resource" "create_env_files" {
     resource.confluent_api_key.connector_key,
   ]
   provisioner "local-exec" {
-    command = "bash ./00_create_client.properties.sh ${confluent_environment.cc_handson_env.id} ${confluent_kafka_cluster.cc_kafka_cluster.id} ${confluent_service_account.connectors.id}"
+    command = "bash ./00_create_client.properties.sh ${confluent_environment.cc_handson_env.id} ${confluent_kafka_cluster.cc_kafka_cluster.id} ${confluent_service_account.connectors.id} ${confluent_kafka_cluster.cc_kafka_cluster.bootstrap_endpoint} ${confluent_api_key.connector_key.id} ${confluent_api_key.connector_key.secret} ${confluent_schema_registry_cluster.advanced.rest_endpoint} ${confluent_api_key.sr_cluster_key.id} ${confluent_api_key.sr_cluster_key.secret}"
     #command = "bash ./00_create_client.properties.sh $P1 $P2 $P3 $P4 $P5 $P6 $P7 $P8 $P9 $Q1 $Q2 $Q3 $Q4 $Q5 $Q6 $Q7"
     #environment = {
       #P1 = "${confluent_environment.cc_handson_env.id}"                   # A01_cc_cdc_env 

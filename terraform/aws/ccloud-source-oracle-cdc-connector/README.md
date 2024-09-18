@@ -1,5 +1,10 @@
 # Oracle CDC Source Connector
 
+For the workshop, we will deploy only one connector; please refer to **Deploy Oracle CDC Source Connector** for more details. Based on our knowledge, the Oracle CDC Connector requires each connector to have its own unique redo log topic. This topic should not be shared between connectors, and each redo log topic contains only one partition. This setup creates a bottleneck for the throughput of a single connector. For example, a partition typically has a maximum throughput of 10 MB/s (such as in Confluent Cloud Dedicated Clusters). Therefore, customers needing more than 10 MB/s throughput will have to run multiple connectors against a single database or PDB. It is important to note that doing so will increase the load on the database.
+
+* *(Optional)* To address this situation, we have developed an alternative solution where we create three connectors for a single database. For more information, see [Running 3 CDC Connectors](3connectors/README.md).
+
+## Deploy Oracle CDC Source Connector
 Oracle Database is running and now we will deploy CDC Connector:
 
    
@@ -30,6 +35,9 @@ The connector will create all topics and schemas for the database table we want 
 The result is a list of topics including AVRO schemas.
 ![CDC TOPICS](img/cdc_topics.png)
 
+The workload of the database is becoming more, so the workload of the compute service will increase. We do have an increase from 0.1 to ~4 % CPU use. Image what happened on your database with heavy workload and running more than one connect per DB. See [3 Connecor deployment](3connectors/README.md).
+![TOP DB Instance](img/top_db_instance.png)
+
 What the connector is doing first, is doing a snapshot of all tables we want to have in our cluster (see `"table.inclusion.regex"`). A so called initial load.
 E.g. in topic `XEPDB1.ORDERMGMT.CONTACTS` we do have an amount of 319 events so far.
 ![contact TOPIC](img/topic_contact_319.png)
@@ -51,7 +59,8 @@ As expected we got the same amount of data. So now, we can try if the connector 
 For a first demo please add yourself as new contact. Before doing that create a new customer.
 
 ```bash
-ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@18.195.50.248
+ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@PUBIP
+sudo docker exec -it oracle21c /bin/bash
 sqlplus ordermgmt/kafka@XEPDB1
 # First the customer, insert your company
 SQL> insert into customers (name, address, website, credit_limit) values ('Confluent Germany GmbH', 'Munich', 'www.confluent.de', 100000);
@@ -89,4 +98,9 @@ And the contact `Carsten Muetzlitz`
 
 The connector is working pretty well.
 
-back to [Deployment-Steps Overview](../README.MD) or continue with the other [DB Services MySQL and PostGreSQL](../mysql_postgres/Readme.md )
+We do have full logging configured in the database. If want to play later with minimal logging, please [follow this simple guide](minimal_logging.md).
+
+> [!NOTE]
+> We enabled full logging on the complete database in our workshop. In your case do it only on the tables you would like to cdc-enable.
+
+back to [Deployment-Steps Overview](../README.MD) or continue with the other [DB Services MySQL and PostGreSQL](../mysql_postgres/Readme.md)

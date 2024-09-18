@@ -32,6 +32,8 @@ cd ../ccloud-source-oracle-cdc-connector/
 source .ccloud_env
 terraform destroy
 rm .ccloud_env
+rm migrateConnectors/.env
+rm migrateConnectors/cdc_ccloud.json
 
 echo "oracle DB Service"
 cd ../oraclexe21c

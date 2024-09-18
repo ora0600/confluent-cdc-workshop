@@ -8,6 +8,12 @@ echo $BASEDIR
 export envid=$1 
 export clusterid=$2 
 export connectorsa=$3 
+export bootstrap=$4 
+export connectorkey=$5 
+export connectorsecret=$6 
+export srrestpoint=$7 
+export srkey=$8 
+export srsecret=$9 
 export ipaddresses=$(echo -e "$(terraform output -json ip_addresses)")
 #echo $ipaddresses
 # Egress IPs
@@ -32,7 +38,13 @@ export confluent_cloud_api_key="\"${TF_VAR_confluent_cloud_api_key}\""
 export confluent_cloud_api_secret="\"${TF_VAR_confluent_cloud_api_secret}\""
 export envid="\"${envid}\""
 export clusterid="\"${clusterid}\""
-export said="\"${connectorsa}\"""> ../oraclexe21c/.aws_env
+export said="\"${connectorsa}\""
+export bootstrap="\"${bootstrap}\""
+export connectorkey="\"${connectorkey}\""
+export connectorsecret="\"${connectorsecret}\""
+export srrestpoint="\"${srrestpoint}\""
+export srkey="\"${srkey}\""
+export srsecret="\"${srsecret}\"""> ../oraclexe21c/.aws_env
 
 # Generate .aws_env for mysql and postgresql compute service setup
 echo "export TF_VAR_myip="\"${myip}/32\""

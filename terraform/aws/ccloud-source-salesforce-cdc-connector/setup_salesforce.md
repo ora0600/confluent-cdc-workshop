@@ -32,7 +32,7 @@ search for Change Data Capture in quick search box in Lightning (left side upper
 
 ![CDC Config 3](img/setup3.png)
 
-The corresponding CDC Name is **ContactChangeEvent**.
+The corresponding CDC Name is **ContactChangeEvent**. The Event name is given by StandardObjectName**ChangeEvent**, see [CDC developer Guide](https://resources.docs.salesforce.com/latest/latest/en-us/sfdc/pdf/salesforce_change_data_capture.pdf), Chapter **Change Event Object Support** page 3.
 
 4. My user is system administrator (normal developer user, after login)
 search for **apps** and click on **App Manager** and then **New Connected App** (right upper corner) 
@@ -70,6 +70,9 @@ Now you everything is configured in Salesforce. The Salesforce Connector paramet
  sf_consumer_key = "consumer key of connected app"
  sf_consumer_secret = "consumer secret of connect app"
 ```
+
 Salesforce CDC configuration is finished.
+
+PS. Most customers are running one connector for one Salesforce Object, e.g. one connector for ContactChangeEvent, one connector for LeadChangeEvent etc. with each 1 Task.
 
 back to [Deployment-Steps Overview](../README.MD) or [Salesforce CDC Connector Deployment Page](README.md).

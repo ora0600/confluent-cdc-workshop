@@ -1,6 +1,6 @@
 # Oracle DB XE Edition running on AWS as docker container
 
-I did prepare an AWS Compute Service running with an Oracle 21 XE Docker image.
+I did prepare an AWS Compute Service running with an Oracle 21c XE Docker image.
 
 ## Prerequisites for this build
 
@@ -42,12 +42,15 @@ Login into cloud compute instance via ssh and check status:
 
 ```bash 
 ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
-# first check if instance is finished with preparation, if you see finish, then everything should be complete
+# first check if instance is finished with preparation, if you see finish, then preparation should be complete
 sudo tail -f /var/log/cloud-init-output.log 
+# The database is ready if you see something like this
+#Cloud-init v. 19.3-46.amzn2.0.2 finished at Sun, 15 Sep 2024 10:35:06 +0000. Datasource DataSourceEc2.  Up 424.02 seconds
+CTRL+C to leave tail
 
 # Execute into container
 cd docker
-sudo docker exec -it oracle21c /bin/bash
+docker exec -it oracle21c /bin/bash
 # Check if oracle Processes run XE_xxxx_XE
 ps -ef | grep ora
 
@@ -68,5 +71,8 @@ Port is always 1521 and HOST is the public IP address of the compute service.
 
 We do have the following data model in Oracle21c ORCLPDB1 implemented. All these tables get CDC-ed by the Oracle CDC Source Connector.
 ![DB Model](img/oracle21c_ERM.png)
+
+Currently the database is not under heavy load. Without a connector running to Oracle DB the workload of the compute service is quite low.
+![top on compute service](img/top_compute.png)
 
 back to [Deployment-Steps Overview](../README.MD) or continue with the [Oracle CDC Connector](../ccloud-source-oracle-cdc-connector/README.md)
