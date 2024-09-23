@@ -37,7 +37,18 @@ rm -rf confluent-cdc-workshop-main/
 
 # run docker compose
 cd docker
-docker-compose up -d
+# docker-compose up -d is not working anymore, do not know why. Instead start the image direclty, this is working. docker-compose up -d errored with invalid reference format
+docker run --name oracle21c \
+-p 1521:1521 -p 5500:5500 -p 8080:8080 \
+-e ORACLE_SID=XE \
+-e ORACLE_PDB=XEPDB1 \
+-e ORACLE_PWD=confluent123 \
+-e ORACLE_MEM=4000 \
+-e ORACLE_CHARACTERSET=AL32UTF8 \
+-e ENABLE_ARCHIVELOG=true \
+-v /opt/oracle/oradata \
+-v ./scripts:/opt/oracle/scripts/setup \
+container-registry.oracle.com/database/express:21.3.0-xe
 
 # Wait 60 seconds before preparing the database for CDC
 sleep 60
