@@ -1,8 +1,19 @@
-# Confluent Cloud Deployment
+# Confluent Cloud Cluster Deployment
 
 The central component of our workshop is a Kafka cluster. We use Confluent Cloud and deploy everything we need with terraform.
 
-**Why Confluent Cloud?**
+# Content
+
+[1. Why Confluent Cloud?](README.md#Why-Confluent-Cloud?)
+
+[2. Prerequisites for this Confluent Cloud deployment](README.md#Prerequisites-for-this-Confluent-Cloud-deployment)
+
+[3. Deployment with terraform](README.md#Deployment-with-terraform)
+
+[4. Confluent Cloud Cluster](README.md#Confluent-Cloud-Cluster)
+
+## Why Confluent Cloud?
+
 Confluent Cloud offers a fully managed, scalable, and secure Apache Kafka service, allowing you to focus on building applications without worrying about infrastructure management. It provides enterprise-grade features like real-time monitoring, built-in connectors, and advanced security controls, ensuring reliable data streaming at scale. Additionally, Confluent Cloud integrates seamlessly with a wide range of cloud services, making it ideal for modern, cloud-native architectures. All of them we will use in the workshop.
 
 ## Prerequisites for this Confluent Cloud deployment
@@ -54,7 +65,7 @@ terraform apply
 #    ...
 ```
 
-> [!WARNING]
+> [!TIP]
 > All the keys are important if you would like to create own clients. E.g. testing the End-to-End Client Encryption.
 
 The deployment via terraform generates the variable values for all subsequent services, particularly the DB compute services, which are stored in the `.aws_env` and `.ccloud_env` files.
@@ -67,35 +78,35 @@ The deployment via terraform generates the variable values for all subsequent se
 
 ## Confluent Cloud Cluster
 
-If your deployment was successfully you will have now:
+If your deployment was successfully build, you will have now:
 
 * An environment (in my case cdc-workshop) with Schema registry and advanced Governance Pack activated
 * Confluent Cloud Cluster Type: BASIC, within the chosen region (in my case, eu-central-1) and cloud provider (in my case, AWS).
 * Topics with AVRO schema format
 * Service Accounts with Role Bindings (App-Manager (EnvironmentAdmin, FlinkDeveloper, FlinkAdmin, Assigner), SR(EnvironmentAdmin), Clients(CloudClusterAdmin), Connectors(CloudClusterAdmin))
 * API Keys for the Service accounts
-* Flink SQL Pool with two statements
+* Flink SQL Pool with two statements deployed
 
 ![Confluent Cloud](img/confluent_cloud.png)
 
 Please have a look on the data portal. You will see two products
 
-* **salesforce_contacts**: this topic was created by terraform and will used by the Salesforce CDC Connector
+* **salesforce_contacts**: this topic was created by terraform and will be used by the Salesforce CDC Connector
 * **salesforce_myleads**: Was created via a `CREATE TABLE Flink Statement` deployed via terraform.
 
 ![Data Portal](img/data_portal_cluster.png)
 
-What you can do right now is to document you data products by adding tag and descriptions. Click on `salesforce_contacts` and add a **description**.
+What you can do right now is to document your data products by adding tags and descriptions. Click on `salesforce_contacts` and add a **description**.
 ![topic description](img/topic_description.png)
 
-You will see that this topic has already a PII Tag, because of the fact that this is personal data. What we can do right now, is to add business metadata to describe a little bit more who is owner etc. Click on **Add business metadata**. Click **Yes, create now** and create a structure and then click **Create**. (Normally you do so at the beginning of your products, so to say to have your business metadata structure ready.)
+You will see that this topic has already a PII Tag, because of the fact that is contains personal data. What we can do right now, is to add business metadata to describe a little bit more who is owner etc. Click on **Add business metadata**. Click **Yes, create now** and create a structure and then click **Create**. (Normally you do so at the beginning of your products, so to say to have your business metadata structure ready.)
 ![business metadata](img/business_metadata.png)
 
 Now, go back to the data portal, filter for your environment and click on `salesforce_contacts`. You can add now your business metadata in above structure and have a pretty documented data products.
 ![data product salesforce_contacts](img/salesforce_contacts_data_products.png)
 
-The advantage of this tagging-documentation is pretty obviously. In a huge data streaming platform or data mesh you will never loose the control. 
-E.g. you need all products related to salesforce. For this you can search via **business metadata** and will get what you search for.
+The advantage of this tagging-documentation is pretty obviously. In a huge data streaming platform or data mesh you will never loose the control.
+E.g. a case would be to see/know all products related to salesforce. For this you can search via **business metadata** and will get what you search for. Click on `view all` then add your filter.
 ![data product salesforce_contacts filter business metadata](img/salesforce_contacts_filter.png)
 
 back to [Deployment-Steps Overview](../README.MD) or [Oracle DB Service guide](oracle21c/README.md)

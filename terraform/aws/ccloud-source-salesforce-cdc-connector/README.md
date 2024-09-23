@@ -1,18 +1,19 @@
 # Deploy Salesforce CDC Source connector
 
 It is expected that you did the [preparation in Salesforce](setup_salesforce.md).
-Before Deployment please login into Salesforce with your credentials you saved in `terraform/aws/.account`. Go to [Sales-Development](https://confluent-1b-dev-ed.develop.my.salesforce.com) or use you own Salesforce-Sandbox. If this is working fine, then do the deployment:
+Before Deployment please login into Salesforce with your credentials you saved in `terraform/aws/.accounts`. Go to [Sales-Development](https://confluent-1b-dev-ed.develop.my.salesforce.com) or use you own Salesforce-Sandbox. Please let the Salesforce App open, we add a contact later.
+If this is working fine, then do the deployment:
 
 ```bash
 # Deploy connector
-cd aws/ccloud-source-postgresql-cdc-connector
+cd ../ccloud-source-salesforce-cdc-connector
 source .ccloud_env
 terraform init
 terraform plan
 terraform apply
 ```
 
-Terraform will output after deployment:
+Terraform will output after a successful deployment:
 
 ```bash
 # Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
@@ -34,8 +35,8 @@ Click on **New** (upper right corner) and create a new Contact. And click **save
 Try to find this record in Confluent Cloud console topic viewer.
 ![salesforce change Topic](img/salesforce_change_topic_insert.png)
 
-Salesforce CDC is working. So, we are finished with the lab.
-With this last Source Connector we should now have  CDC Source Connectors running.
+Salesforce CDC is working. So, we are finished with this lab.
+With this last Source Connector we should now have all CDC Source Connectors running.
 ![all CDC Connector](img/all_cdc_connectors.png)
 
 back to [Deployment-Steps Overview](../README.MD) or continue with [data processing](../dataprocessingREADME.md).

@@ -1,16 +1,16 @@
 # DeployPostgres CDC Source V2 (Debezium) connector
 
-First activate the postgres Connector in Confluent Cloud:
+Activate the postgres CDC Connector in Confluent Cloud:
 
 ```bash
-cd aws/ccloud-source-postgresql-cdc-connector
+cd ../ccloud-source-postgresql-cdc-connector
 source .ccloud_env
 terraform init
 terraform plan
 terraform apply
 ```
 
-Terraform will output after deployment:
+Terraform will output after a successful deployment:
 
 ```bash
 # Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
@@ -22,16 +22,17 @@ The postgres CDC Connector is running.
 ![postgres connector is running](img/postgres_connector.png)
 
 Terraform need a while to close. But the connector is working already.
-The connector will create a new topics `<topic.prefix>.public.<tablename>`. 
+The connector will create new topics `<topic.prefix>.public.<tablename>`. 
 ![change Topics](img/postgres_topics.png)
 
 Topics are created automatically.
 
 Try to insert a new record:
+
 ```bash
-ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
+ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@$TF_VAR_host_name
 # INSERT
-$ docker exec -it postgres psql -U postgres-user -d customers
+sudo docker exec -it postgres psql -U postgres-user -d customers
 customers=# INSERT INTO STATUS_NAME VALUES (6, 'Status Name 6');
 # INSERT 0 1
 customers=# select * from status_name;

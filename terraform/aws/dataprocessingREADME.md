@@ -1,4 +1,4 @@
-# Data Processing with FLINK SQL 
+# Data Processing with Flink SQL
 
 ## Content
 
@@ -13,6 +13,10 @@
 [5. Join all transformed contacts and do de-duplication and masking](dataprocessingREADME.md#5-Join-all-transformed-contacts-and-do-de-duplication-and-masking)
 
 ## 1. Transform Salesforce Data
+
+> [!TIP]
+> You can decide working in the UI or Shell. To open shell run `confluent flink compute-pool list --environment $TF_VAR_envid; export POOLID=<SEARCH ID> confluent flink shell --compute-pool $POOLID --environment $TF_VAR_envid`
+
 
 Flink SQL Pool was deployed with the Confluent Cloud cluster
 ![FLINK SQL Pool](img/flink_sql_pool.png)
@@ -36,7 +40,7 @@ The result is our created new contact in Salesforce.
 
 ![FLINK workspace select salesforce_contacts](img/flink_workspace_salesforce_contacts.png)
 
-The Salesforce CDC Connector does really load the data into a structured way. You will see that Debezium do not. Anyway, I would to start with a first transformation. We create a new table and add only those data we need:
+The Salesforce CDC Connector does really load the data into a structured way. Anyway, I would to start with a first transformation. We create a new table and add only those data we need:
 
 Create the Table:
 
@@ -108,11 +112,18 @@ select * from oracle_mycontacts;
 ```
 
 Now fill the oracle_product table and add generated AI Information to the new table column **selling Information**. The idea behind this is that we have not enough money to pay a product copywriter. That's why we do it with the help of openAI:
-Create the Model first (please execute the `set`and `CREATE` together. Paste Both command into workspace and click then **Run**):
+Create the Connection first and then the Model:
+
+First create the connection in terminal (you need a pretty fresh confluent cli here, my version is 4.4):
+
+```Bash
+confluent flink connection create openai-connection --cloud AWS --region eu-central-1 --type openai --endpoint https://api.openai.com/v1/chat/completions --api-key  $OPENAI_API_KEY --environment $TF_VAR_envid
+```
+
+Create the AI Model:
 
 ```SQL
-SET 'sql.secrets.my_api_key' = 'sk-XXXXX';
-CREATE MODEL cdcproductgenai_openai_model INPUT(prompt STRING) OUTPUT(response STRING) COMMENT 'cdcproductgenai-openai' WITH ('task' = 'text_generation','provider'='openai','openai.endpoint'='https://api.openai.com/v1/chat/completions','openai.api_key'='{{sessionconfig/sql.secrets.my_api_key}}','openai.system_prompt'='You are helping me to create a best selling description for a product. Give a best selling product info for the product');
+CREATE MODEL cdcproductgenai_openai_model INPUT(prompt STRING) OUTPUT(response STRING) COMMENT 'cdcproductgenai-openai' WITH ('task' = 'text_generation','provider'='openai','openai.connection' = 'openai-connection','openai.model_version' = 'gpt-3.5-turbo', 'openai.system_prompt'='You are helping me to create a best selling description for a product. Give a best selling product info for the product');
 ```
 
 The model can now described
@@ -207,11 +218,10 @@ Check if events are in new table:
 select * from postgres_mycontacts;
 ```
 
-Enrich with genAI. **You can use the model created during the Oracle lab** (2. Transform Oracle Data and Enrich with GenAI). If the model has not yet been created, please do so now (execute `set`and `CREATE` together. Paste both into workspace and click **Run**):
+Enrich with genAI. We use the mode from [2. Transform Oracle Data and Enrich with GenAI](dataprocessingREADME.md#Transform-Oracle-Data-and-Enrich-with-GenAI). :
 
 ```SQL
-SET 'sql.secrets.my_api_key' = 'sk-xxxx';
-CREATE MODEL cdcproductgenai_openai_model INPUT(prompt STRING) OUTPUT(response STRING) COMMENT 'cdcproductgenai-openai' WITH ('task' = 'text_generation','provider'='openai','openai.endpoint'='https://api.openai.com/v1/chat/completions','openai.api_key'='{{sessionconfig/sql.secrets.my_api_key}}','openai.system_prompt'='You are helping me to create a best selling description for a product. Give a best selling product info for the product');
+describe model cdcproductgenai_openai_model;
 ```
 
 Create transformation table for PostGreSQL Products:
@@ -272,7 +282,7 @@ END;
 Check the results:
 
 ```SQL
-select * from all_contacts;
+select * from all_contacts where firstname='Suvad';
 ```
 
 You will see, we do have duplicates: at least a duplicate with **Suvad**.
@@ -294,7 +304,7 @@ select * from all_products;
 ```
 
 Now we try Flink Actions. We will mask the email in all_contacts:
-Go to data portal and choose all_contacts data product first. On the left side you see Action button, choose it. Enter the fields and confirm.
+Go to data portal, choose the correct environment `cdc-workshop-xxxx` and then choose `all_contacts` data product. On the left side you see Action button, choose it. Click `Mask Fields` and Enter the fields and `confirm and run`.
 ![FLINK Actions](img/flink_action.png)
 
 A new topic was created: `all_contacts_mask`
@@ -303,7 +313,7 @@ A new topic was created: `all_contacts_mask`
 Check in FLINK SQL the results:
 
 ```SQL
-select * from all_contacts_mask
+select * from all_contacts_mask;
 ```
 
 or use the topic viewer:
@@ -314,7 +324,7 @@ Try to de-duplicate `all_products` or `all_contacts`. Do the same like for Maski
 If successful you will see this output
 ![all_contacts_depublication](img/all_contacts_dedup.png) 
 
-Please have also a look on the Flink Throughput status window. You will see that a couple of CFUs are activated. If you see pending jobs it would good idea to increase the CFU Amount. Increase to 20. And you will see the pending jobs are know running.
+Please have also a look on the Flink Throughput status window. You will see that a couple of CFUs are activated. If you see pending jobs it would be a good idea to increase the CFU Amount. Increase to 20. And you will see the pending jobs are know running.
 ![increase CFU](img/cfu_increase.png)
 
 Check yourself, if your Flink Actions do what you expect. (Have a look into the Flink Statements section and look what the jobs do)

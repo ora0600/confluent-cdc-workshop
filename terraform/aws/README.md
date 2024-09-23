@@ -4,7 +4,18 @@ You have chosen AWS. We will conduct the entire workshop exclusively using AWS s
 
 ![Workshop Architecture in AWS](img/AWS-CDC-Workshop-Architecture-ATG.png)
 
+# Content
+
+[1. Prerequisite](README.md#Prerequisite)
+
+[2. Start your Deployment](README.md#Start-your-Deployment)
+
+[3. Destroy Deployment Cloud Services for Hands-on](README.md#Destroy-Deployment-Cloud-Services-for-Hands-on)
+
 ## Prerequisite
+
+> [!CAUTION]
+> The workshop was tested with MacBook Pro on Intel.
 
 The preparations are very important and need your attention.
 
@@ -16,7 +27,7 @@ The preparations are very important and need your attention.
 create a file for all your credentials used in this workshop and store it in `terraform/aws/.accounts`:
 
 ```bash
-cd terraform/aws/
+cd confluent-cdc-workshop/terraform/aws/
 echo "# Confluent Cloud
 export TF_VAR_confluent_cloud_api_key=\"KEY\"
 export TF_VAR_confluent_cloud_api_secret=\"SECRET\"
@@ -40,7 +51,7 @@ export sf_consumer_key=\"YOUR CONSUMER KEY\"
 export sf_consumer_secret=\"YOUR CONSUMER SECRET\"
 export sf_cdc_name=\"ContactsChangeEvent\"
 # openAI
-export OPENAI_API_KEY=\"sk-YOURKEY\"" > ../.accounts
+export OPENAI_API_KEY=\"sk-YOURKEY\"" > .accounts
 ```
 
 **Parameter description:**
@@ -65,7 +76,6 @@ export OPENAI_API_KEY=\"sk-YOURKEY\"" > ../.accounts
 * sf_cdc_name: ContactsChangeEvent if for the CDC Object Contacts.
 * (optional) OPENAI_API_KEY: Your openAI API Key
 
-
 If the `.accounts` file is ready, then preparation is finished. Now everything is more or less easy to execute. We will use terraform only.
 
 ## 1. Start your Deployment
@@ -88,9 +98,10 @@ How to deploy the cloud resources:
    SalesForce CDC Connector Deployment instructions are find [here](ccloud-source-salesforce-cdc-connector/README.md)
 8. Data processing with Flink SQL
    This is the main part of the Hands-on Workshop. We will transform, mask and more within the data processing part. Instruction Guide is [here](dataprocessingREADME.md).
-9. Sink new data to Sink services with deployed Sink Connectors (S3, Redshift). We will start with S3. Follow [S3 setup](). Then the setup for [Redshift]().
-10. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, follow this [guide](advanced_recordgeneration.md)
-11. (optional): Migrate Connectors, this is very important to move self-managed connectors to fully-managed connectors, and also for replay. follow this [guide](connector_migration.md)
+9. Sink new data to Sink services with deployed Sink Connectors (S3, Redshift). We will start with S3. Follow [S3 Sink Connector setup](ccloud-sink-s3-connector/README.md). 
+10. Then the setup for [Redshift Sink Connector](ccloud-sink-redshift-connector/README.md).
+11. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, follow this [guide](advanced_recordgeneration.md)
+12. (optional): Migrate Connectors, this is very important to move self-managed connectors to fully-managed connectors, and also for replay. follow this [guide](connector_migration.md)
 
 If you did implement all components then we run 6 Connectors (4 Source, 2 Sink)
 ![All connectors](img/all_connectors.png)
@@ -106,12 +117,12 @@ If you would like to check now our data products, please click on the Data Porta
 Destroy each component step by step:
 
 ```bash
-cd terraform/aws
+cd confluent-cdc-workshop/terraform/aws
 bash ./00_shutdown_services.sh
 ```
 
-Please check in AWS console and Confluent Cloud Console if all services are really deleted. Do not forget, Cloud is costs money. If you left a service running, it will generate costs.
-If some component is not deleted by terraform, delete it please manually.
+Please check in AWS console and Confluent Cloud Console if all services are really deleted. Do not forget, Cloud costs money. If you left a service running, it will generate costs.
+If some components are not deleted by terraform, delete it please manually or run again `terraform destroy` for this component.
 
 Good job. The **Hands-on Workshop within AWS is FINISHED**.
 

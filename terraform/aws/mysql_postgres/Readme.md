@@ -8,7 +8,7 @@ This docker-compose based setup includes:
 We will deploy it to AWS Compute.
 
 ```bash
-cd mysql_postgres/
+cd ../mysql_postgres/
 source .aws_env
 terraform init 
 terraform plan
@@ -16,7 +16,7 @@ terraform apply
 ```
 
 This deployment will deploy mysql and postgresql docker container in AWS compute.
-terraform output is:
+Terraform output is:
 
 ```bash
 # Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
@@ -47,11 +47,13 @@ sudo docker-compose ps
 #postgres   docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp,:::5432->5432/tcp  
 
 # connect into mysql container
-$ sudo docker exec -it mysql bash -l
+sudo docker exec -it mysql bash -l
 # Check backup in enabled (prereq for CDC Connector)
 root@mysql > cat /etc/mysql/conf.d/mysql.cnf
 # Log_bin = incremental back is enabled
 # log_bin           = mysql-bin
+exit;
+exit;
 ```
 
 A mySQL DB should have incremental backup enable. See above.
@@ -89,7 +91,8 @@ If you have no mysql-Shell installed on your Mac, you can do the same in the doc
 
 ```bash
 ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
-$ sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "select * from accounts;"
+sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "select * from accounts;"
+exit
 ```
 
 For PostgreSQL you can use psql cli tool if you have it installed:
@@ -127,11 +130,13 @@ If you have no psql cli installed on your Mac, you can do the same in the docker
 ```bash
 ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
 # with password postgres-pw
-$ sudo docker exec -it postgres psql -U postgres-user -d customers
+sudo docker exec -it postgres psql -U postgres-user -d customers
+# show tables
 customers=# \dt
 customers=# select * from users;
+# enter q to break the select
 customers-# \q
-$ exit
+exit
 ```
 
 DB Services MySQL and PostGeSQL are running.

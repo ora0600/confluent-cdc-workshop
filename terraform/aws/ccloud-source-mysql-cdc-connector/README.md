@@ -1,9 +1,9 @@
 # Deploy MySQL CDC Source V2 (Debezium) connector
 
-Also the mySQL Connector is deployed via terraform:
+Now, we will deploy the mySQL CDC Connector via terraform:
 
 ```bash
-cd aws/ccloud-source-mysql-cdc-connector
+cd ../ccloud-source-mysql-cdc-connector
 source .ccloud_env
 terraform init
 terraform plan
@@ -25,7 +25,7 @@ The connector will create a new topic `dbhistory.<topic.prefix>.<connect-id> in 
 
 ![mysql history Topic](img/mysql_topic.png)
 
-When a Debezium MySQL connector is first started, it performs an initial consistent snapshot of your database. This snapshot enables the connector to establish a baseline for the current state of the database. Debezium can use different modes when it runs a snapshot. The snapshot mode is determined by the snapshot.mode configuration property. The default value of the property is **initial**, which we use as well.
+When a Debezium MySQL CDC connector is first started, it performs an initial consistent snapshot of your database. This snapshot enables the connector to establish a baseline for the current state of the database. Debezium can use different modes when it runs a snapshot. The snapshot mode is determined by the `snapshot.mode` configuration property. The default value of the property is **initial**, which we use as well.
 
 The connector is configured to CDC table Accounts see `"table.include.list" = "demo.accounts"`. For this DB Table a so called change topic will be created with `<topic.prefix>.<database>.<table-name>` in my case `mysql.demo.accounts`.
 
@@ -36,17 +36,17 @@ Both topics (history and change) are created automatically.
 Try to insert a new record:
 
 ```bash
-ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
+ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@$TF_VAR_host_name
 # INSERT twice the same record, we will do later de-duplication
-$ docker exec mysql mysql -umysqluser -pmysqlpw demo -e "INSERT INTO accounts (account_id, first_name, last_name, email, phone, address, country)
+sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "INSERT INTO accounts (account_id, first_name, last_name, email, phone, address, country)
 VALUES ('a009', 'Suvad', 'Sahovic', 'suvad@cofluent.io', '+49 30 9393993', '13595 Berlin', 'Germany');"
-Output: 
-mysql: [Warning] Using a password on the command line interface can be insecure.
-$ docker exec mysql mysql -umysqluser -pmysqlpw demo -e "INSERT INTO accounts (account_id, first_name, last_name, email, phone, address, country)
+#Output: 
+#mysql: [Warning] Using a password on the command line interface can be insecure.
+sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "INSERT INTO accounts (account_id, first_name, last_name, email, phone, address, country)
 VALUES ('a010', 'Suvad', 'Sahovic', 'suvad@cofluent.io', '+49 30 9393993', '13595 Berlin', 'Germany');"
 # Just ignore it
 # check if inserted
-$ docker exec mysql mysql -umysqluser -pmysqlpw demo -e "select * from accounts;"
+sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "select * from accounts;"
 exit;
 ```
 
