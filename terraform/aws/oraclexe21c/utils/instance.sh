@@ -48,7 +48,7 @@ docker run --name oracle21c \
 -e ENABLE_ARCHIVELOG=true \
 -v /opt/oracle/oradata \
 -v ./scripts:/opt/oracle/scripts/setup \
-container-registry.oracle.com/database/express:21.3.0-xe
+-d container-registry.oracle.com/database/express:21.3.0-xe
 
 # Wait 60 seconds before preparing the database for CDC
 sleep 60
