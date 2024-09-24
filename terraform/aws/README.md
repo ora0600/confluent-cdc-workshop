@@ -23,6 +23,7 @@ The preparations are very important and need your attention.
 * AWS account ([Sign-up](https://aws.amazon.com/free/)) and [Create an AWS IAM User Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).  And finally create a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html) for your Amazon EC2 instance
 * Salesforce account and configuration for using CDC. Create a Salesforce Developer account [Sign-up](https://developer.salesforce.com/signup). Configure Salesforce CDC, follow [my setup with screenshots](ccloud-source-salesforce-cdc-connector/setup_salesforce.md) or use [Confluent Documentation](https://docs.confluent.io/cloud/current/connectors/cc-salesforce-source-cdc.html#quick-start)
 * (optional) openAI Account ([Sign-up](https://platform.openai.com/signup/)) and [API Key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key), we need this to produce product data
+* I will use `export myip=$(dig +short myip.opendns.com @resolver1.opendns.com)` in [00_create_client.properties.sh](ccloud-cluster/00_create_client.properties.sh), please check if this command is working for you. If not set export myip=X.X.X.X manually to your public IP.
 
 create a file for all your credentials used in this workshop and store it in `terraform/aws/.accounts`:
 
@@ -49,7 +50,7 @@ export sf_password=\"YOUR PW\"
 export sf_password_token=\"YOUR TOKEN\"
 export sf_consumer_key=\"YOUR CONSUMER KEY\"
 export sf_consumer_secret=\"YOUR CONSUMER SECRET\"
-export sf_cdc_name=\"ContactsChangeEvent\"
+export sf_cdc_name=\"ContactChangeEvent\"
 # openAI
 export OPENAI_API_KEY=\"sk-YOURKEY\"" > .accounts
 ```
@@ -73,7 +74,7 @@ export OPENAI_API_KEY=\"sk-YOURKEY\"" > .accounts
 * sf_password_token: Your Salesforce Password token
 * sf_consumer_key: Your CONSUMER Key
 * sf_consumer_secret: YOUR CONSUMER SECRET
-* sf_cdc_name: ContactsChangeEvent if for the CDC Object Contacts.
+* sf_cdc_name: ContactChangeEvent if for the CDC Object Contacts.
 * (optional) OPENAI_API_KEY: Your openAI API Key
 
 If the `.accounts` file is ready, then preparation is finished. Now everything is more or less easy to execute. We will use terraform only.
