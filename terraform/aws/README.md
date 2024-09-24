@@ -15,7 +15,12 @@ You have chosen AWS. We will conduct the entire workshop exclusively using AWS s
 ## Prerequisite
 
 > [!CAUTION]
-> The workshop was tested with MacBook Pro on Intel.
+> The workshop was tested with MacBook Pro on Intel. if you run Apple Mac Silicon processor please [prepare](https://medium.com/@immanoj42/terraform-template-v2-2-0-does-not-have-a-package-available-mac-m1-m2-2b12c6281ea), so that your terraform execution is working fine.
+
+Main tools:
+
+* terraform
+* confluent cli
 
 The preparations are very important and need your attention.
 
