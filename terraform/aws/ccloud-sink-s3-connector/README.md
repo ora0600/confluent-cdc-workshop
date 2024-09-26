@@ -44,10 +44,10 @@ customers-# \q
 $ exit
 ```
 
-New product is flowing into `all_products` topic:
+Now product is flowing into `all_products` topic:
 ![new product](img/newproduct.png)
 
-But still nothing visible in S3. It takes a while and you will see the avro file.
+But still nothing visible in S3. It takes a while and then you will see the avro file.
 ![s3 upload](img/s3upload.png)
 
-back to [Deployment-Steps Overview](../README.MD) or continue with Sink Cloud Services [Redshift](aws-redshift/README.md)
+back to [Deployment-Steps Overview](../README.md) or continue with Sink Cloud Services [Redshift](../aws-redshift/README.md)
