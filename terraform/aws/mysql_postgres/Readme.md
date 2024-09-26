@@ -141,4 +141,4 @@ exit
 
 DB Services MySQL and PostGeSQL are running.
 
-back to [Deployment-Steps Overview](../README.MD) or continue with the [MySQL CDC Connector Setup](../ccloud-source-mysql-cdc-connector/README.md )
+back to [Deployment-Steps Overview](../README.md) or continue with the [MySQL CDC Connector Setup](../ccloud-source-mysql-cdc-connector/README.md )
