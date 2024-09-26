@@ -33,4 +33,4 @@ You can check in your aws console, if bucket exists:
 ![S3 bucket](img/s3bucket.png)
 
 
-back to [Deployment-Steps Overview](../README.MD) or continue with the [S3 Sink Connector](../ccloud-sink-s3-connector/README.md)
+back to [Deployment-Steps Overview](../README.md) or continue with the [S3 Sink Connector](../ccloud-sink-s3-connector/README.md)
