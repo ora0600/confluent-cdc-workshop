@@ -1,8 +1,8 @@
 # Deploy AWS Redshift via terraform
 
-This lab is optional.
+This lab is ***optional***.
 
-Deploy the cluster:
+Deploy the AWS Redshift cluster:
 
 ```bash
 cd ../aws-redshift
@@ -21,7 +21,7 @@ If you did deploy successfully with terraform you will get the following output:
 # redshift_cluster_dns = "cdcworkshop-cluster-81d1.cokweyivzuty.eu-central-1.redshift.amazonaws.com"
 ```
 
-to see the complete sensitive data do:
+to see the complete sensitive data output from terraform do:
 
 ```bash
 terraform output redshift_cluster_details
@@ -31,4 +31,4 @@ Redshift Cluster is deployed
 ![aws redshift](img/awsredshift.png)
 
 
-back to [Deployment-Steps Overview](../README.MD) or continue with the [Redshift Sink Connector](../cccloud-sink-redshift-connector/README.md)
+back to [Deployment-Steps Overview](../README.md) or continue with the [Redshift Sink Connector](../cccloud-sink-redshift-connector/README.md)
