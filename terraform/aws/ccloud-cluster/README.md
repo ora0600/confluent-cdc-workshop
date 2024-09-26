@@ -109,4 +109,4 @@ The advantage of this tagging-documentation is pretty obviously. In a huge data 
 E.g. a case would be to see/know all products related to salesforce. For this you can search via **business metadata** and will get what you search for. Click on `view all` then add your filter.
 ![data product salesforce_contacts filter business metadata](img/salesforce_contacts_filter.png)
 
-back to [Deployment-Steps Overview](../README.MD) or [Oracle DB Service guide](oracle21c/README.md)
+back to [Deployment-Steps Overview](../README.md) or [Oracle DB Service guide](../oraclexe21c/README.md)
