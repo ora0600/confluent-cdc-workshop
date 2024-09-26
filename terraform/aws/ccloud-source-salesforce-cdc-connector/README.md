@@ -1,8 +1,8 @@
 # Deploy Salesforce CDC Source connector
 
 It is expected that you did the [preparation in Salesforce](setup_salesforce.md).
-Before Deployment please login into Salesforce with your credentials you saved in `terraform/aws/.accounts`. Go to [Sales-Development](https://confluent-1b-dev-ed.develop.my.salesforce.com) or use you own Salesforce-Sandbox. Please let the Salesforce App open, we add a contact later.
-If this is working fine, then do the deployment:
+Before Deployment please login into Salesforce with your credentials you saved in `terraform/aws/.accounts`. Go to [Salesforce-Development](https://login.salesforce.com)) or use you own Salesforce-Sandbox. Please let the Salesforce App open, we add a contact later.
+If you did login successfully, then please do the deployment:
 
 ```bash
 # Deploy connector
@@ -39,4 +39,4 @@ Salesforce CDC is working. So, we are finished with this lab.
 With this last Source Connector we should now have all CDC Source Connectors running.
 ![all CDC Connector](img/all_cdc_connectors.png)
 
-back to [Deployment-Steps Overview](../README.MD) or continue with [data processing](../dataprocessingREADME.md).
+back to [Deployment-Steps Overview](../README.md) or continue with [data processing](../dataprocessingREADME.md).
