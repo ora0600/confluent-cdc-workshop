@@ -218,7 +218,7 @@ Check if events are in new table:
 select * from postgres_mycontacts;
 ```
 
-Enrich with genAI. We use the mode from [2. Transform Oracle Data and Enrich with GenAI](dataprocessingREADME.md#Transform-Oracle-Data-and-Enrich-with-GenAI). :
+Enrich with genAI. We use the mode from [2. Transform Oracle Data and Enrich with GenAI](dataprocessingREADME.md#2-Transform-Oracle-Data-and-Enrich-with-GenAI). :
 
 ```SQL
 describe model cdcproductgenai_openai_model;
@@ -329,4 +329,4 @@ Please have also a look on the Flink Throughput status window. You will see that
 
 Check yourself, if your Flink Actions do what you expect. (Have a look into the Flink Statements section and look what the jobs do)
 
-back to [Deployment-Steps Overview](../README.MD) or continue with Sink Cloud Services [S3](aws-s3/README.md)
+back to [Deployment-Steps Overview](../README.md) or continue with Sink Cloud Services [S3](aws-s3/README.md)
