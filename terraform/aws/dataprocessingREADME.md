@@ -329,4 +329,4 @@ Please have also a look on the Flink Throughput status window. You will see that
 
 Check yourself, if your Flink Actions do what you expect. (Have a look into the Flink Statements section and look what the jobs do)
 
-back to [Deployment-Steps Overview](../README.md) or continue with Sink Cloud Services [S3](aws-s3/README.md)
+back to [Deployment-Steps Overview](README.md) or continue with Sink Cloud Services [S3](aws-s3/README.md)
