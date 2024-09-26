@@ -31,4 +31,4 @@ Redshift Cluster is deployed
 ![aws redshift](img/awsredshift.png)
 
 
-back to [Deployment-Steps Overview](../README.md) or continue with the [Redshift Sink Connector](../cccloud-sink-redshift-connector/README.md)
+back to [Deployment-Steps Overview](../README.md) or continue with the [Redshift Sink Connector](../ccloud-sink-redshift-connector/README.md)
