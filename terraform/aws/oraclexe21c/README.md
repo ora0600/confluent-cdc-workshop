@@ -16,7 +16,7 @@ Reminder: this section you run already during the  preparation
 * (from preparation) Having an AWS Account, with AWS Key and Secret, see [manage access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). My AWS access key has these permission policies aligned: AdministratorAccess, AmazonEC3FullAccess, AmazonS3FullAccess and AmazonRedshiftFullAccess
 * (from preparation) having AWS compute key pair created (for the SSH Access) see [AWS docu](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html)
 * (from preparation) terraform installed (I am running v.1.6.6)
-* (this is generated automatically ) knowing your current Public IP Address, see [my IP](https://www.myip.com/) and the EGRESS IP List from Confluent cloud. This will be automatically added in `.aws_env`file.
+* (this is generated automatically ) knowing your current Public IP Address, see [my IP](https://www.myip.com/) and the EGRESS IP List from Confluent cloud. This will be automatically added in `.aws_env`file. It will happen that MYIP was not correct generated, so please change if necessary.
 * (optional for Oracle XE) Accept the OTN License (for playing with Oracle), see [OTN License](https://www.oracle.com/downloads/licenses/standard-license.html)
 * (optional) you could run SQL Developer and SQL*Plus on your desktop
 
@@ -89,4 +89,4 @@ We do have the following data model in Oracle21c XEPDB1 implemented. All these t
 Currently the database is not under heavy load. Without a connector running to Oracle DB the workload of the compute service is quite low.
 ![top on compute service](img/top_compute.png)
 
-back to [Deployment-Steps Overview](../README.MD) or continue with the [Oracle CDC Connector](../ccloud-source-oracle-cdc-connector/README.md)
+back to [Deployment-Steps Overview](../README.md) or continue with the [Oracle CDC Connector](../ccloud-source-oracle-cdc-connector/README.md)
