@@ -1,0 +1,19 @@
+version: '2.4'
+services:
+  database:
+    container_name: oracle21c
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+      - name=oracle21c
+      - ORACLE_SID=XE
+      - ORACLE_PDB=XEPDB1
+      - ORACLE_PWD=confluent123
+      - ORACLE_MEM=4000
+      - ENABLE_ARCHIVELOG=true
+      - ORACLE_CHARACTERSET=AL32UTF8
+    volumes:
+      - /opt/oracle/oradata # persistent oracle database data.
+      - ./scripts:/opt/oracle/scripts/setup # Prepare DB for Confluent CDC and install sample data
+    ports:
+      - 1521:1521
+      - 8080:8080
+      - 5500:5500
