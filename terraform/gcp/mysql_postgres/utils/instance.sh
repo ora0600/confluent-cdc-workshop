@@ -29,8 +29,10 @@ echo vm.max_map_count=262144 >> /etc/sysctl.conf
 sysctl -w vm.max_map_count=262144
 echo "    *       soft  nofile  65535
     *       hard  nofile  65535" >> /etc/security/limits.conf
-chmod +x /usr/local/bin/docker-compose
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# Docker-compose
+curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose    
+sudo mv docker-compose /usr/local/bin && sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 
 
 echo "Tool installation finished" >> /var/log/instance.log
 
