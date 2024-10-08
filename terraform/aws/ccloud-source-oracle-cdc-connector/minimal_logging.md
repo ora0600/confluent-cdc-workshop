@@ -33,6 +33,7 @@ The change was also added to table topic XEPDB1.ORDERMGMT.CUSTOMERS
 Now try to change logging in the database
 
 ```SQL
+# IN PDB
 SQL> connect sys/confluent123@XEPDB1 as sysdba
 SQL> SELECT SUPPLEMENTAL_LOG_DATA_MIN, SUPPLEMENTAL_LOG_DATA_PK, SUPPLEMENTAL_LOG_DATA_ALL FROM V$DATABASE;
 SUPPLEME SUP SUP
@@ -41,14 +42,15 @@ IMPLICIT NO  YES
 SQL> SELECT * FROM ALL_LOG_GROUPS WHERE OWNER='ORDERMGMT' and TABLE_NAME='CUSTOMERS';
 
 # Do minimal logging see https://docs.confluent.io/kafka-connectors/oracle-cdc/current/minimal-supplemental-logging.html
+# Go to CDB
 SQL> connect sys/confluent123@XE as sysdba
 SQL> ALTER DATABASE DROP SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
 SQL> SELECT SUPPLEMENTAL_LOG_DATA_MIN, SUPPLEMENTAL_LOG_DATA_PK, SUPPLEMENTAL_LOG_DATA_ALL FROM V$DATABASE;
 SUPPLEME SUP SUP
 -------- --- ---
 NO       NO  NO
-SQL> SELECT SUPPLEMENTAL_LOG_DATA_MIN, SUPPLEMENTAL_LOG_DATA_PK, SUPPLEMENTAL_LOG_DATA_ALL FROM V$DATABASE;
 SQL> ALTER DATABASE ADD SUPPLEMENTAL LOG DATA;
+# Back tp PDB
 SQL> connect sys/confluent123@XEPDB1 as sysdba
 SQL> ALTER TABLE ORDERMGMT.CUSTOMERS ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
 SQL> SELECT SUPPLEMENTAL_LOG_DATA_MIN, SUPPLEMENTAL_LOG_DATA_PK, SUPPLEMENTAL_LOG_DATA_ALL FROM V$DATABASE;
@@ -56,7 +58,7 @@ SUPPLEME SUP SUP
 -------- --- ---
 YES      NO  NO
 SQL> SELECT * FROM ALL_LOG_GROUPS WHERE OWNER='ORDERMGMT' and TABLE_NAME='CUSTOMERS';
-# Login as schema owner and change data
+# Login as schema owner and change data, if no connector is running start a new connector with "oracle.supplemental.log.level"     = "msl"
 SQL> connect ordermgmt/kafka@XEPDB1
 SQL> update customers set credit_limit=4444 where customer_id=304;
 SQL> commit;
