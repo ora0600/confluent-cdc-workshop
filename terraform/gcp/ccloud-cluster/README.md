@@ -2,7 +2,7 @@
 
 The central component of our workshop is a Kafka cluster. We use Confluent Cloud and deploy everything we need with terraform.
 
-# Content
+## Content
 
 [1. Why Confluent Cloud?](README.md#Why-Confluent-Cloud?)
 
@@ -18,7 +18,7 @@ Confluent Cloud offers a fully managed, scalable, and secure Apache Kafka servic
 
 ## Prerequisites for this Confluent Cloud deployment
 
-* Having an Confluent Cloud Account, with Key and Secret
+* Having an Confluent Cloud Account, with Cloud AP Key and Secret, see [Cloud API Keys](https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html)
 * terraform installed (I am running v.1.6.6)
 * `.accounts` file is updated with correct credentials and settings.
 
@@ -27,7 +27,7 @@ Confluent Cloud offers a fully managed, scalable, and secure Apache Kafka servic
 Deploy the cluster with terraform and get the following output:
 
 ```bash
-cd terraform/aws/ccloud-cluster
+cd terraform/gcp/ccloud-cluster
 # Source environment variables
 source ../.accounts
 # execute terraform
@@ -64,10 +64,10 @@ terraform apply
 > [!TIP]
 > All the keys are important if you would like to create own clients. E.g. testing the End-to-End Client Encryption or play with own clients
 
-The deployment via terraform generates the variable values for all subsequent services, particularly the DB compute services, which are stored in the `.gcp_env` and `.ccloud_env` files.
+The deployment via terraform generates the variable values for all subsequent services, particularly the DB compute services, which are stored in the `.gcp_env` and `.ccloud_env` files. The generation is done by `ccloud-cluster/00_create_client.properties.sh` shell script.
 
-* for Oracle XE 21c DB Compute services and all variables we need to create the service. Execute `cat ../oraclexe21c/.gcp_env`.
-* for mysql and PosterGreSQL DB compute Service and all variables we need to create the service. Execute `cat ../mysql_postgres/.gcp_env`.
+* for Oracle XE 21c DB Compute services with all parameters we need to create this DB service. Execute `cat ../oraclexe21c/.gcp_env`.
+* for mysql and PosterGreSQL DB compute Service with all variables or parameters we need to create the service. Execute `cat ../mysql_postgres/.gcp_env`.
 * for Google Storage service setup `cat ../gcp-storage/.gcp_env`
 * for Bigquery service setup `cat ../gcp-bigquerry/.gcp_env`
 * for Salesforce connector setup `cat ../ccloud-source-salesforce-cdc-connector/.ccloud_env`

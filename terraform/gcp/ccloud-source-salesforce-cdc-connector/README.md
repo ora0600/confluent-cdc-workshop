@@ -1,10 +1,10 @@
 # Deploy Salesforce CDC Source connector
 
 It is expected that you did the [preparation in Salesforce](setup_salesforce.md).
-Before Deployment please login into Salesforce with your credentials you saved in `terraform/aws/.accounts`. Go to [Salesforce-Development](https://login.salesforce.com)) or use you own Salesforce-Sandbox. Please let the Salesforce App open, we add a contact later.
+Before Deployment please login into Salesforce with your credentials you saved in `terraform/gcp/.accounts`. Go to [Salesforce-Development](https://login.salesforce.com)) or use you own Salesforce-Sandbox. Please let the Salesforce App open, we add a contact later.
 If you did login successfully, then please do the deployment:
 
-Before deploy the first connector before consider if you would like to run a second Salesforce CDC Connector for CDC LeadChangeEvent. If you would do it, then copy the complete now:
+Before deploy the first connector consider if you would like to run a second Salesforce CDC Connector for e.g. LeadChangeEvent. If you would do it, then copy the complete directory as mentioned below:
 
 ```bash
 cd ..
@@ -17,7 +17,7 @@ Now, deploy the first Salesforce CDC Connector.
 # Deploy connector
 cd ../ccloud-source-salesforce-cdc-connector
 # or
-cd ccloud-source-salesforce-cdc-connector
+# cd ccloud-source-salesforce-cdc-connector2/
 source .ccloud_env
 terraform init
 terraform plan
@@ -78,7 +78,7 @@ terraform apply
 ```
 
 > [!TIP]
-> Now, we have 2 Salesforce CDC Connectors. It is best practice to run 1 Task Connectors for each Event-Object.
+> Now, we have 2 Salesforce CDC Connectors. It is best practice to run 1 Task Connectors for each Event-Object. In Basic cluster by the way, a connector can have max. 1 Task.
 
 Please enter a new Lead.
 ![salesforce new Lead](img/salesforce_new_lead.png)

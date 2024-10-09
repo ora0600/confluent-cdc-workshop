@@ -32,7 +32,7 @@ Terraform output is:
 
 The deployment takes a short while till everything is up and running. Login via ssh: 
 
-```bash 
+```bash
 ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@x.x.x.x
 # If Cloud-init logfiles scrolls content, then setup is not finished yet
 sudo tail -f /var/log/cloud-init-output.log
@@ -57,7 +57,7 @@ exit;
 ```
 
 A mySQL DB should have incremental backup enable. See above.
-You can use your mysql-Shell Desktop tool:
+You can use your mysql-Shell Desktop tool if installed:
 
 ```bash
 # Install mySQL Shell on mac os https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install-macos-quick.html
@@ -65,6 +65,7 @@ You can use your mysql-Shell Desktop tool:
 # see reference https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-commands.html
 # with password mysqlpw
 mysqlsh mysqluser@PUBIP:3306/demo
+# If you do not get a sql prompt add \sql
 SQL> show tables;
 #+----------------+
 #| Tables_in_demo |
@@ -104,7 +105,7 @@ For PostgreSQL you can use psql cli tool if you have it installed:
 # echo 'export PATH="/usr/local/Cellar/libpq/16.3/bin:$PATH"' >> ~/.bash_profile
 # ln -s /usr/local/Cellar/libpq/10.3/bin/psql /usr/local/bin/psql
 #  with password postgres-pw, exit
-psql -h PUBIP -p 5432 -U postgres-user -d customers`
+psql -h PUBIP -p 5432 -U postgres-user -d customers
 customers=# \dt
 #Schema |     Name     | Type  |     Owner     
 #--------+--------------+-------+---------------
@@ -122,6 +123,7 @@ customers=# select * from users;
 #       1 | User 1
 #       2 | User 2
 # ...
+# end select with q
 customers=# \q
 ```
 

@@ -1,9 +1,10 @@
 # Oracle DB XE Edition running on GCP as docker container
 
-I did prepare an GCP Compute Service running with an Oracle 21c XE Docker image. So, there are no license fees.
-CDC is preconfigured, so that everything mentioned [here](https://docs.confluent.io/cloud/current/connectors/cc-oracle-cdc-source/oracle-cdc-setup-includes/prereqs-validation.html#oracle-database-prerequisites-for-oracle-cdc-source-connector-for-product) is already implemented at Oracle level.
+I did prepare an GCP Compute Service running with an Oracle 21c XE Docker image. So, there are no license fees, because XE is a free edition of Oracle. Typically Oracle CDC Connector from Confluent need an Enterprise Edition.
+CDC is preconfigured, so that everything mentioned [here](https://docs.confluent.io/cloud/current/connectors/cc-oracle-cdc-source/oracle-cdc-setup-includes/prereqs-validation.html#oracle-database-prerequisites-for-oracle-cdc-source-connector-for-product) is already implemented at the Oracle DB level.
+You just to deploy the Oracle DB Compute service, and you can start playing.
 
-# Contents
+## Contents
 
 [1. Prerequisites for this build](README.md#Prerequisites-for-this-build)
 
@@ -38,16 +39,20 @@ If you did deploy successfully with terraform you will get the following output:
 #A02_instance_details = <sensitive>
 #A03_PUBLICIP = "x.x.x.x"
 #A04_SSH = "Please use SSH connection in Compute Engine Console"
-#A05_OracleAccess = "sqlplus sys/confluent123@XE as sysdba or sqlplus sys/confluent123@XEPDB1 as sysdba or sqlplus ordermgmt/kafka@XEPDB1  Port:1521  HOST:35.195.174.223"
+#A05_OracleAccess = "sqlplus sys/confluent123@XE as sysdba or sqlplus sys/confluent123@XEPDB1 as sysdba or sqlplus ordermgmt/kafka@XEPDB1  Port:1521  HOST:X.X.X.X"
 ```
 
-It takes a little while till everything is up and running in gcp compute instance. The database has to start etc.
+It takes a little while (10-14 minutes, sorry it is much more faster you create your own image) till everything is up and running in gcp compute instance. The database has to start etc.
 Please **write down the Public IP**, we need it later.
 Login into cloud compute instance via ssh (in google compute engine console) and check status, please use the [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances) and click SSH of your created VM.
 ![Click SSH](img/ssh_google_console.png)
 
-
 ```bash
+sudo tail -f /var/log/messages
+# if you see Startup finished in 1.348s (kernel) + 4.086s (initrd) + 11min 485ms (userspace) = 11min 5.921s. then startup of compute is finished
+
+# Status container
+ sudo docker container ls
 # Execute into container
 sudo docker exec -it oracle21c /bin/bash
 # Check if oracle Processes run XE_xxxx_XE
@@ -61,6 +66,12 @@ sqlplus sys/confluent123@XE as sysdba
 SQL> show pdbs
 # Show Archive Log enabled
 SQL> archive log list;
+# Database log mode              **Archive Mode**
+# Automatic archival             **Enabled**
+# Archive destination            /opt/oracle/homes/OraDBHome21cXE/dbs/arch
+# Oldest online log sequence     2
+# Next log sequence to archive   4
+# Current log sequence           4
 SQL> connect ordermgmt/kafka@XEPDB1
 SQL> select * from cat;
 SQL> exit;

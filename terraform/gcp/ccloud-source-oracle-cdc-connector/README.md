@@ -38,16 +38,15 @@ The connector will create all topics and schemas for the database table we want 
 The result is a list of topics including AVRO schemas.
 ![CDC TOPICS](img/cdc_topics.png)
 
-As the workload on the database increases, resources in the compute service also become scarce. Before deploying the CDC connector, we had a CPU usage rate of 0.1%, which rose to approximately 4% after deployment. It’s easy to imagine that the more connectors are deployed against a database, the higher the load on the database compute service will become. If the database workload is already high, careful consideration must be given to how to proceed.. See [3 Connecor deployment](3connectors/README.md).
+As the workload on the database increases, resources in the compute service also become scarce. Before deploying the CDC connector, we had a CPU usage rate of 0.1%, which rose to approximately 4-8% after deployment. It’s easy to imagine that the more connectors are deployed against a database, the higher the load on the database compute service will become. If the database workload is already high, careful consideration must be given to how to proceed.. See [3 Connector deployment](3connectors/README.md).
 ![TOP DB Instance](img/top_db_instance.png)
 
 The first task the connector is taking a snapshot of all the tables we want to include in our cluster (see "table.inclusion.regex"), which is known as the initial load. For example, in the topic XEPDB1.ORDERMGMT.CONTACTS, we currently have 319 events.
 ![contact TOPIC](img/topic_contact_319.png)
 
-Please check the current dataset in our database:
+Please check the current dataset in our database. Go to [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances) and open SSH Connection:
 
 ```bash
-ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@$TF_VAR_oracle_host
 sudo docker exec -it oracle21c /bin/bash
 sqlplus ordermgmt/kafka@XEPDB1
 SQL> select count(*) from CONTACTS;
@@ -65,7 +64,7 @@ sqlplus ordermgmt/kafka@XEPDB1
 # First the customer, insert your company
 SQL> insert into customers (name, address, website, credit_limit) values ('Confluent Germany GmbH', 'Munich', 'www.confluent.de', 100000);
 SQL> commit;
-# Commit complete.
+# Commit complete. 
 SQL> select customer_id from customers where name ='Confluent Germany GmbH';
 CUSTOMER_ID
 -----------
@@ -102,10 +101,12 @@ And the contacts of `Carsten Muetzlitz`
 ![ TOPIC topic contacts](img/contacts_topic.png)
 
 The connector is working pretty well.
+> [!TIP]
+> Be aware that the update of the table topics could take a while in this setup. (**optional**) You could try to increase the max.tasks parameter in `cflt_connector.tf` or do it live in the confluent cloud connector config (for basic cluster only 1 task is allowed. If you run dedicated cluster you can increase in confluent cloud console).
 
 We do have full logging configured in the database. If you want to play later with minimal logging, please [follow this simple guide](minimal_logging.md).
 
 > [!TIP]
-> We enabled full logging on the complete database in our workshop. It is better for the database that you set supplemental logging for tables only (in our case 13 Tables) and not for the whole database.
+> We enabled full logging on the complete database in our workshop. It is better for the database performance that you set supplemental logging for the specific tables only (in our case 13 Tables) and not for the whole database.
 
 back to [Deployment-Steps Overview](../README.md) or continue with the other [DB Services MySQL and PostGreSQL](../mysql_postgres/Readme.md)

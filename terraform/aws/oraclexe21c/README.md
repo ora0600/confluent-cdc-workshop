@@ -1,6 +1,7 @@
 # Oracle DB XE Edition running on AWS as docker container
 
 I did prepare an AWS Compute Service running with an Oracle 21c XE Docker image. So, there are no license fees.
+CDC is preconfigured, so that everything mentioned [here](https://docs.confluent.io/cloud/current/connectors/cc-oracle-cdc-source/oracle-cdc-setup-includes/prereqs-validation.html#oracle-database-prerequisites-for-oracle-cdc-source-connector-for-product) is already implemented at Oracle level.
 
 # Contents
 
@@ -13,9 +14,9 @@ I did prepare an AWS Compute Service running with an Oracle 21c XE Docker image.
 
 Reminder: this section you run already during the  preparation
 
-* (from preparation) Having an AWS Account, with AWS Key and Secret, see [manage access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). My AWS access key has these permission policies aligned: AdministratorAccess, AmazonEC3FullAccess, AmazonS3FullAccess and AmazonRedshiftFullAccess
-* (from preparation) having AWS compute key pair created (for the SSH Access) see [AWS docu](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html)
-* (from preparation) terraform installed (I am running v.1.6.6)
+* **(from preparation)** Having an AWS Account, with AWS Key and Secret, see [manage access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). My AWS access key has these permission policies aligned: AdministratorAccess, AmazonEC3FullAccess, AmazonS3FullAccess and AmazonRedshiftFullAccess
+* **(from preparation)** having AWS compute key pair created (for the SSH Access) see [AWS docu](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html)
+* **(from preparation)** terraform installed (I am running v.1.6.6)
 * (this is generated automatically ) knowing your current Public IP Address, see [my IP](https://www.myip.com/) and the EGRESS IP List from Confluent cloud. This will be automatically added in `.aws_env`file. It will happen that MYIP was not correct generated, so please change if necessary.
 * (optional for Oracle XE) Accept the OTN License (for playing with Oracle), see [OTN License](https://www.oracle.com/downloads/licenses/standard-license.html)
 * (optional) you could run SQL Developer and SQL*Plus on your desktop
@@ -62,7 +63,6 @@ sudo tail -f /var/log/cloud-init-output.log
 CTRL+C to leave tail
 
 # Execute into container
-cd docker
 sudo docker exec -it oracle21c /bin/bash
 # Check if oracle Processes run XE_xxxx_XE
 ps -ef | grep ora
@@ -78,6 +78,7 @@ SQL> archive log list;
 SQL> connect ordermgmt/kafka@XEPDB1
 SQL> select * from cat;
 SQL> exit;
+exit;
 exit;
 ```
 

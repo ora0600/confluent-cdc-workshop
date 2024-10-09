@@ -27,10 +27,9 @@ The connector will create new topics `<topic.prefix>.public.<tablename>`.
 
 Topics are created automatically.
 
-Try to insert a new record:
+Try to insert a new record via [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances)  and SSH connection:
 
 ```bash
-ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@$TF_VAR_host_name
 # INSERT
 sudo docker exec -it postgres psql -U postgres-user -d customers
 customers=# INSERT INTO STATUS_NAME VALUES (6, 'Status Name 6');

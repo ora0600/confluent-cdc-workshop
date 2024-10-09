@@ -4,7 +4,7 @@ You have chosen GCP. We will conduct the entire workshop exclusively using GCP s
 
 ![Workshop Architecture in GCP](img/GCP-CDC-Workshop-Architecture-ATG.png)
 
-# Content
+## Content
 
 [1. Prerequisite](README.md#Prerequisite)
 
@@ -25,17 +25,18 @@ Main tools:
 
 The preparations are very important and need your attention.
 
-* Confluent Cloud account([Sign-up](https://www.confluent.io/confluent-cloud/tryfree/)) and [Confluent Cloud API Key](https://www.confluent.io/blog/confluent-terraform-provider-intro/#api-key)
-* To use Google Cloud services, you need to have a Google Cloud Platform (GCP) account. If you don’t have one, you can sign up at [Google Cloud Console](https://console.cloud.google.com/).
-* Installing Google Cloud SDK `gcloud`. The Google Cloud SDK, also known as `gcloud`, is a command-line tool that provides access to GCP services. Install it on your local machine by following the instructions in the [Google Cloud SDK documentation](https://cloud.google.com/sdk/docs/install).
-* After installing gcloud, authenticate it with your Google Cloud account by running `gcloud auth login`. This step ensures that you have the necessary credentials to interact with your GCP projects and resources.
-* Configure `gcloud` with your default project and region settings using `gcloud config set project PROJECT_ID` and `gcloud config set compute/region REGION` to make sure your Terraform configurations align with your target environment. Check with `gcloud config configurations list`and compare if config is correct
+* Confluent Cloud account([Sign-up](https://www.confluent.io/confluent-cloud/tryfree/)) and [Confluent Cloud API Key](https://www.confluent.io/blog/confluent-terraform-provider-intro/#api-key). 
+* Set up Google
+   - To use Google Cloud services, you need to have a Google Cloud Platform (GCP) account. If you don’t have one, you can sign up at [Google Cloud Console](https://console.cloud.google.com/).
+   - Installing Google Cloud SDK `gcloud`. The Google Cloud SDK, also known as `gcloud`, is a command-line tool that provides access to GCP services. Install it on your local machine by following the instructions in the [Google Cloud SDK documentation](https://cloud.google.com/sdk/docs/install).
+   - After installing gcloud, authenticate it with your Google Cloud account by running `gcloud auth login`. This step ensures that you have the necessary credentials to interact with your GCP projects and resources.
+   - Configure `gcloud` with your default project and region settings using `gcloud config set project PROJECT_ID` and `gcloud config set compute/region REGION` to make sure your Terraform configurations align with your target environment. Check with `gcloud config configurations list`and compare if config is correct
+   - To interact with GCP using Terraform, you should create a service account with appropriate permissions. This service account will be used for authentication when running Terraform. You can create a service account in the Google Cloud Console and download a JSON key file. Do it in the [console](https://console.cloud.google.com/iam-admin/serviceaccounts/create). We add a couple of roles: Compute Admin, Compute Storage Admin, Compute Network Admin, Bigquery Admin, Storage Admin and generate keys. This will download the json file. add the complete path with file name to `gcp_credentials` in file `.account`
 * Install terraform. Terraform is not bundled with gcloud, so you need to install it separately. You can download Terraform from the official website and follow the [installation instructions](https://developer.hashicorp.com/terraform/install).
-* To interact with GCP using Terraform, you should create a service account with appropriate permissions. This service account will be used for authentication when running Terraform. You can create a service account in the Google Cloud Console and download a JSON key file. Do it in the [console](https://console.cloud.google.com/iam-admin/serviceaccounts/create). We add a couple of roles: Compute Admin, Compute Storage Admin, Compute Network Admin, Bigquery Admin, Storage Object Admin and generate keys. This will download the json file. `export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"`
 * Salesforce account and configuration for using CDC. Create a Salesforce Developer account [Sign-up](https://developer.salesforce.com/signup). Configure Salesforce CDC, follow [my setup with screenshots](ccloud-source-salesforce-cdc-connector/setup_salesforce.md) or use [Confluent Documentation](https://docs.confluent.io/cloud/current/connectors/cc-salesforce-source-cdc.html#quick-start)
 * (optional) openAI Account ([Sign-up](https://platform.openai.com/signup/)) and [API Key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key), we need this to produce product data
 
-create a file for all your credentials used in this workshop and store it in `terraform/aws/.accounts`:
+create a file for all your credentials used in this workshop and store it in `terraform/gcp/.accounts`:
 
 ```bash
 cd confluent-cdc-workshop/terraform/gcp/
@@ -50,7 +51,6 @@ export TF_VAR_sr_package=\"ADVANCED\"
 # GCP Cloud
 export gcp_credentials=\"~/keys/gcp_cdc_workshop.json\"
 export project_id=\"<ProjectName>\"
-export project_region=\"europe-west1\"
 export project_zone=\"europe-west1-c\"
 export service_account_name=\"<Service Account Name>\"
 export owner_email=\"cmutzlitz_confluent_io\"
@@ -77,18 +77,17 @@ export OPENAI_API_KEY=\"sk-YOURKEY\"" > .accounts
 * TF_VAR_sr_package: We will use the Advanced Governance package, value is "ADVANCED"
 * gcp_credentials is the credential file
 * project_id of the gcp project (the name, not the ID)
-* project_region e.g "europe-west1". This is output after login to gcloud
 * project_zone "europe-west1-c". This is output after login to gcloud
 * service_account_name you created for this project
 * owner_email , this username like **cmutzlitz_confluent_io** of GCP user with underscores of my registered email **cmutzlitz@confluent.io**
 * vm_user:  e.g. my email of my account will be used as ios user in vm in this style **cmutzlitz_confluent_io**
-* bucket_name: gcp storage bucket name
+* bucket_name: gcp storage bucket name here cdc-workshop
 * sf_user: Your Salesforce user
 * sf_password: Your Salesforce password
 * sf_password_token: Your Salesforce Password token
 * sf_consumer_key: Your CONSUMER Key
 * sf_consumer_secret: YOUR CONSUMER SECRET
-* sf_cdc_name: ContactChangeEvent if for the CDC Object Contacts.
+* sf_cdc_name: ContactChangeEvent if you choosed the CDC Object Contacts.
 * (optional) OPENAI_API_KEY: Your openAI API Key
 
 If the `.accounts` file is ready, then preparation is finished. Now everything is more or less easy to execute. We will use terraform only.
@@ -113,21 +112,18 @@ How to deploy the cloud resources:
    SalesForce CDC Connector Deployment instructions are find [here](ccloud-source-salesforce-cdc-connector/README.md)
 8. Data processing with Flink SQL
    This is the main part of the Hands-on Workshop. We will transform, mask and more within the data processing part. Instruction Guide is [here](dataprocessingREADME.md).
-9. Sink new data to Sink services with deployed Sink Connectors (Storage, Bigquery). We will start with Storage. Follow [Storage Sink Connector setup](). 
-10. Then the setup for [BigQuery Sink Connector]().
+9. Sink new data to Sink services with deployed Sink Connectors (Storage, Bigquery). We will start with Storage. Follow [Storage Sink Connector setup](gcp-storage/README.md). 
+10. Then the setup for [BigQuery Sink Connector](), Coming soon.
 11. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, follow this [guide](advanced_recordgeneration.md)
 12. (optional): Migrate Connectors, this is very important to move self-managed connectors to fully-managed connectors, and also for replay. follow this [guide](connector_migration.md)
 
-If you did implement all components then we run 6 Connectors (4 Source, 2 Sink)
-<!-- Change this image -->
-![All connectors](img/all_connectors.png)    
+If you did implement all components then we run 5 Connectors (4 Source, 1 Sink). Bigquery connector coming soon.
+![All connectors](img/all_connectors.png)
 
-All Labs are implemented. In Confluent **Stream Lineage** we see now what is happening in our cluster and how the data is flowing. Filter by hours
-<!-- Change this image -->
+All Labs are implemented. In Confluent **Stream Lineage** we see now what is happening in our cluster and how the data is flowing. Filter by hours. Without bigquery connector.
 ![Stream Lineage](img/stream_lineage.png)
 
-If you would like to check now our data products, please click on the Data Portal and choose the correct environment **cdc-workshop-xxx**. Then you see all the products we did implement.
-<!-- Change this image -->
+If you would like to check now our data products, please click on the Data Portal and choose the correct environment **cdc-workshop-xxx**. Then you see all the products we did implement. Without bigquery connector.
 ![Data Portal](img/data_portal_total.png)
 
 ## Destroy Deployment Cloud Services for Hands-on

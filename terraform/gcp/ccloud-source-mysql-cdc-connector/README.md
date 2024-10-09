@@ -15,13 +15,13 @@ Terraform will output after deployment:
 ```bash
 # Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 # Outputs:
-# A00_MYSQK_CDC_Connector = "Login into your Confluent Cloud Console and check in your cluster if mysql CDC Source Connector is running"
+# A00_MYSQL_CDC_Connector = "Login into your Confluent Cloud Console and check in your cluster if mysql CDC Source Connector is running"
 ```
 
 ![mysql connector is running](img/mysql_connector.png)
 
-Terraform need a while to close. But the connector is working already. You can check via Confluent Cloud UI.
-The connector will create a new topic `dbhistory.<topic.prefix>.<connect-id> in my case dbhistory.mysql.lcc-vkp625`.  This topic stores the history of what happened in the mysql DB. The internal database schema history topic is for connector use only, and it is not intended for direct use by consuming applications. 
+Terraform need a while to close. But the connector is working already. You can check via Confluent Cloud UI. It could take 5-10 minutes till terraform outputs.
+The connector will create a new topic `dbhistory.<topic.prefix>.<connect-id> in my case dbhistory.mysql.lcc-vkp625`.  This topic stores the history of what happened in the mysql DB. The internal database schema history topic is for connector use only, and it is not intended for direct use by consuming applications.
 
 ![mysql history Topic](img/mysql_topic.png)
 
@@ -33,10 +33,9 @@ First the current db record-set will be produced by doing a snapshot. Afterwards
 
 Both topics (history and change) are created automatically.
 
-Try to insert a new record:
+Try to insert a new record via  [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances) and SSH connection:
 
 ```bash
-ssh -i ~/keys/cmawskeycdcworkshop.pem ec2-user@$TF_VAR_host_name
 # INSERT twice the same record, we will do later de-duplication
 sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "INSERT INTO accounts (account_id, first_name, last_name, email, phone, address, country)
 VALUES ('a009', 'Suvad', 'Sahovic', 'suvad@cofluent.io', '+49 30 9393993', '13595 Berlin', 'Germany');"
@@ -47,7 +46,6 @@ VALUES ('a010', 'Suvad', 'Sahovic', 'suvad@cofluent.io', '+49 30 9393993', '1359
 # Just ignore it
 # check if inserted
 sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "select * from accounts;"
-exit;
 ```
 
 Try to find this record in Confluent Cloud console topic viewer.

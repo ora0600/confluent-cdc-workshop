@@ -1,6 +1,6 @@
-# DeployPostgres CDC Source V2 (Debezium) connector
+# Deploy PostgreSQL CDC Source V2 (Debezium) connector
 
-Activate the postgres CDC Connector in Confluent Cloud:
+Activate the PostgreSQL CDC Connector in Confluent Cloud:
 
 ```bash
 cd ../ccloud-source-postgresql-cdc-connector
@@ -22,7 +22,7 @@ The postgres CDC Connector is running.
 ![postgres connector is running](img/postgres_connector.png)
 
 Terraform need a while to close. But the connector is working already.
-The connector will create new topics `<topic.prefix>.public.<tablename>`. 
+The connector will create new topics `<topic.prefix>.public.<tablename>`.
 ![change Topics](img/postgres_topics.png)
 
 Topics are created automatically.
@@ -45,7 +45,8 @@ customers=# select * from status_name;
 #              5 | Status Name 5
 #              6 | Status Name 6
 customers-# \q
-$ exit
+exit
+exit
 ```
 
 Try to find this record in Confluent Cloud console topic viewer.

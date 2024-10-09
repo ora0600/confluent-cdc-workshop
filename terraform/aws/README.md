@@ -15,7 +15,7 @@ You have chosen AWS. We will conduct the entire workshop exclusively using AWS s
 ## Prerequisite
 
 > [!CAUTION]
-> The workshop was tested with MacBook Pro on Intel. if you run Apple Mac Silicon processor please [prepare](https://medium.com/@immanoj42/terraform-template-v2-2-0-does-not-have-a-package-available-mac-m1-m2-2b12c6281ea), so that your terraform execution is working fine.
+> The workshop was tested with MacBook Pro on Intel. If you run Apple Mac Silicon processor please [prepare](https://medium.com/@immanoj42/terraform-template-v2-2-0-does-not-have-a-package-available-mac-m1-m2-2b12c6281ea), so that your terraform execution is working fine.
 
 Main tools:
 
@@ -25,10 +25,10 @@ Main tools:
 The preparations are very important and need your attention.
 
 * Confluent Cloud account([Sign-up](https://www.confluent.io/confluent-cloud/tryfree/)) and [Confluent Cloud API Key](https://www.confluent.io/blog/confluent-terraform-provider-intro/#api-key)
-* AWS account ([Sign-up](https://aws.amazon.com/free/)) and [Create an AWS IAM User Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).  And finally create a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html) for your Amazon EC2 instance
+* AWS account ([Sign-up](https://aws.amazon.com/free/)) and [Create an AWS IAM User Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).  And finally create a [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html) for your Amazon EC2 instance. I store the private key into `~/keys/' and change the acceess right to `chmod 400 private.pem`
 * Salesforce account and configuration for using CDC. Create a Salesforce Developer account [Sign-up](https://developer.salesforce.com/signup). Configure Salesforce CDC, follow [my setup with screenshots](ccloud-source-salesforce-cdc-connector/setup_salesforce.md) or use [Confluent Documentation](https://docs.confluent.io/cloud/current/connectors/cc-salesforce-source-cdc.html#quick-start)
 * (optional) openAI Account ([Sign-up](https://platform.openai.com/signup/)) and [API Key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key), we need this to produce product data
-* I will use `export myip=$(dig +short myip.opendns.com @resolver1.opendns.com)` in [00_create_client.properties.sh](ccloud-cluster/00_create_client.properties.sh), please check if this command is working for you. If not set export myip=X.X.X.X manually to your public IP.
+* I will use `export myip=$(dig +short myip.opendns.com @resolver1.opendns.com)` in [00_create_client.properties.sh](ccloud-cluster/00_create_client.properties.sh), please check if this command is working for you. If not set `export myip=X.X.X.X` manually to your public IP in [00_create_client.properties.sh](ccloud-cluster/00_create_client.properties.sh).
 
 create a file for all your credentials used in this workshop and store it in `terraform/aws/.accounts`:
 
@@ -71,7 +71,7 @@ export OPENAI_API_KEY=\"sk-YOURKEY\"" > .accounts
 * aws_access_key: AWS User Key
 * aws_secret_key: AWS User Key secret
 * aws_region: Region in AWS should be same like TF_VAR_cc_cloud_region, but is not enforced could also another region
-* ssh_key_name: Name of the compute ssh key, we will use. AWS owns the public key and you need the private key, create it before AWS deployment
+* ssh_key_name: Name of the compute ssh key, we will use. AWS owns the public key and you need the private key, create it before AWS deployment. Enter the name here. Any copy the .pem file into ~/keys/
 * owner_email: Every AWS Resource will get a tag owner_email with email you mentioned here
 * bucket_name: S3 bucket name
 * sf_user: Your Salesforce user
@@ -125,10 +125,11 @@ Destroy each component step by step:
 ```bash
 cd confluent-cdc-workshop/terraform/aws
 bash ./00_shutdown_services.sh
+# You need to enter YES for each deployed resources, the whole exercise does take a while
 ```
 
-Please check in AWS console and Confluent Cloud Console if all services are really deleted. Do not forget, Cloud costs money. If you left a service running, it will generate costs.
-If some components are not deleted by terraform, delete it please manually or run again `terraform destroy` for this component.
+> [!IMPORTANT]
+> Please check in AWS console and Confluent Cloud Console if all services are really deleted. Do not forget, Cloud costs money. If you left a service running, it will generate  costs. If some components are not deleted by terraform, delete it please manually or run again `terraform destroy` for this component.
 
 Good job. The **Hands-on Workshop within AWS is FINISHED**.
 

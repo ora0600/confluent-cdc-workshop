@@ -1,6 +1,6 @@
 # Data Processing with Flink SQL
 
-Now, we do really hands-on. Now we to transform, enrich and create new data. We will do this task with Flink SQL and the help of openAI.
+Now, we do really hands-on. Now we transform, enrich and create new data. We will do this task with Flink SQL and the help of openAI.
 
 ## Content
 
@@ -23,7 +23,7 @@ Flink SQL Pool was deployed with the Confluent Cloud cluster
 ![FLINK SQL Pool](img/flink_sql_pool.png)
 
 Please open SQL workspace by clicking on the button **open SQL workspace** or use the compute pool cli (here you need to install confluent cli first).
-You need to proof that the workshop (our Confluent Cloud Environment Name) and database (the Confluent Cloud Cluster name) has been chosen correctly.
+You need to proof that the workshop (our Confluent Cloud Environment Name) and database (the Confluent Cloud Cluster name) has been chosen correctly (see right above corner).
 
 ![FLINK workspace login](img/flink_sql_pool_workspace_login.png)
 
@@ -82,6 +82,9 @@ We transform the table contacts and products first. New Table for Oracle contact
 select * from `XEPDB1.ORDERMGMT.CONTACTS`;
 ```
 
+You can use the explorer to filter data. Enter `Mützlitz` in `lastname` to see the duplicates. Click on the filter symbol.
+![FLINK duplicates](img/flink_duplicates.png)
+
 Prepare transformed view:
 
 ```SQL
@@ -118,10 +121,16 @@ Create the Connection first and then the Model:
 First create the connection in terminal (you need a pretty fresh confluent cli here, my version is 4.4):
 
 ```Bash
-confluent flink connection create openai-connection --cloud AWS --region eu-central-1 --type openai --endpoint https://api.openai.com/v1/chat/completions --api-key  $OPENAI_API_KEY --environment $TF_VAR_envid
+confluent flink connection create openai-connection --cloud GCP --region europe-west1 --type openai --endpoint https://api.openai.com/v1/chat/completions --api-key  $OPENAI_API_KEY --environment $TF_VAR_envid
 ```
 
-Create the AI Model wit a system prompt `You are helping me to create a best selling description for a product. Give a best selling product info for the product` to tell chatgpt what to do:
+Check if connection was created:
+
+```bash
+confluent flink connection  list --cloud GCP --region europe-west1  --environment $TF_VAR_envid
+```
+
+Create the AI Model with a system prompt `You are helping me to create a best selling description for a product. Give a best selling product info for the product` to tell chatgpt what to do, go back the confluent cloud console:
 
 ```SQL
 CREATE MODEL cdcproductgenai_openai_model INPUT(prompt STRING) OUTPUT(response STRING) COMMENT 'cdcproductgenai-openai' WITH ('task' = 'text_generation','provider'='openai','openai.connection' = 'openai-connection','openai.model_version' = 'gpt-3.5-turbo', 'openai.system_prompt'='You are helping me to create a best selling description for a product. Give a best selling product info for the product');
@@ -304,10 +313,11 @@ Check the results:
 select * from all_products;
 ```
 
-You can double-check the Flink Pool CFU usage. In my case I am running right now 8 of 120 CFUs and have 8 Jobs running (use the Filter).
+You can double-check the Flink Pool CFU usage. In my case I am running right now 8 of 20 CFUs and have 8 Jobs running (use the Filter), number is visible after scroll down.
+![FLINK jobs](img/flink_jobs1.png)
 
 Now we try Flink Actions. We will mask the email in all_contacts:
-Go to data portal, choose the correct environment `cdc-workshop-xxxx` and then choose `all_contacts` data product. On the left side you see Action button, choose it. Click `Mask Fields` and Enter the fields and `confirm and run`.
+Go to data portal, choose the correct environment `cdc-workshop-xxxx` and then choose `all_contacts` data product. On the left side you see Action button, choose it. Click `Mask Fields` and Enter the fields, choose Alphanumeric characters as regex and `confirm and run`.
 ![FLINK Actions](img/flink_action.png)
 
 A new topic was created: `all_contacts_mask`
@@ -322,7 +332,7 @@ select * from all_contacts_mask;
 or use the topic viewer:
 ![all_contacts_mask](img/all_contacts_mask.png) 
 
-Try to de-duplicate `all_products` or `all_contacts`. Do the same like for Masking with De-duplication Flink Action (over the Data Portal) know.
+Try to de-duplicate `all_products` or `all_contacts`. Do the same like for Masking with De-duplication Flink Action (over the Data Portal) know. I want to depuplicate the complete message.
 
 If successful you will see this output
 ![all_contacts_deduplication](img/all_contacts_dedup.png) 
@@ -338,4 +348,4 @@ select * from all_contacts_deduplicate where _firstname='Carsten';
 
 Check yourself, if your Flink Actions do what you expect. (Have a look into the Flink Statements section and look what the jobs do).
 
-back to [Deployment-Steps Overview](README.md) or continue with Sink Cloud Services [S3](aws-s3/README.md)
+back to [Deployment-Steps Overview](README.md) or continue with Sink Cloud Services [gcp-storage](gcp-storage/README.md)

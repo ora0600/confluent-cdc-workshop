@@ -3,7 +3,7 @@
 Deploy the S3 Bucket via:
 
 ```bash
-cd ../aws-s3
+cd aws-s3
 source .aws_env
 terraform init 
 terraform plan
@@ -25,9 +25,9 @@ If you did deploy successfully with terraform you will get the following output:
 #A02_bucket_name = "cmcdc-workshop-6faf"
 ```
 
-You can check in your aws console, if bucket exists: 
+You can check in your aws console, if bucket exists:
 
-* Bucket_name: 
+* Bucket_name: cmcdc-workshop-XXX
 * Aws Region: eu-central-1 (Frankfurt)
 
 ![S3 bucket](img/s3bucket.png)

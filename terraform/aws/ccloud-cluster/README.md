@@ -66,21 +66,21 @@ terraform apply
 ```
 
 > [!TIP]
-> All the keys are important if you would like to create own clients. E.g. testing the End-to-End Client Encryption.
+> All the keys are important if you would like to create own clients. E.g. testing the End-to-End Client Encryption or play with own clients-
 
 The deployment via terraform generates the variable values for all subsequent services, particularly the DB compute services, which are stored in the `.aws_env` and `.ccloud_env` files.
 
 * for Oracle 21c DB Compute services with egress allowed cidr range and all variables we need to create the service. Execute `cat ../oracle21c/.aws_env`.
 * for mysql and PosterGreSQL DB compute Service with egress allowed cidr range and all variables we need to create the service. Execute `cat ../mysql_postgres/.aws_env`.
-* for S3 service setup `aws-s3/.aws_env`
-* for Redshift service setup `aws-redshift/.aws_env`
-* for Salesforce connector setup `ccloud-source-salesforce-cdc-connector/.ccloud_env`
+* for S3 service setup `cat ../aws-s3/.aws_env`
+* for Redshift service setup `cat ../aws-redshift/.aws_env`
+* for Salesforce connector setup `cat ../ccloud-source-salesforce-cdc-connector/.ccloud_env`
 
 ## Confluent Cloud Cluster
 
 If your deployment was successfully build, you will have now:
 
-* An environment (in my case cdc-workshop) with Schema registry and advanced Governance Pack activated
+* An environment (in my case cdc-workshop-xxx) with Schema registry and advanced Governance Pack activated
 * Confluent Cloud Cluster Type: BASIC, within the chosen region (in my case, eu-central-1) and cloud provider (in my case, AWS).
 * Topics with AVRO schema format
 * Service Accounts with Role Bindings (App-Manager (EnvironmentAdmin, FlinkDeveloper, FlinkAdmin, Assigner), SR(EnvironmentAdmin), Clients(CloudClusterAdmin), Connectors(CloudClusterAdmin))

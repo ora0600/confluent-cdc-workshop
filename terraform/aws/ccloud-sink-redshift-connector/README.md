@@ -68,6 +68,6 @@ Run the query and you will see all the duplicates.
 
 Fortunately, we have already performed deduplication on the `all_contacts` topic. Fixing duplicates in Redshift would be complex and incur additional costs for data transfer. Therefore, it is more efficient to load only the unique data into Redshift. A potential solution would be to run the connector with the `all_contacts_deduplicate` topic, but this step is optional.
 
-Everything is implemented. You are finished right now. Do not forget to delete everything. At [Deployment-Steps Overview](../README.md#destroy-deployment-cloud-services-for-hands-on) you have a complete script to delete everything.
+Everything is implemented. You are finished right now. Do not forget to delete everything. At [Deployment-Steps Overview](../README.md#Destroy-Deployment-Cloud-Services-for-Hands-on) you have a complete script to delete everything.
 
 back to [Deployment-Steps Overview](../README.md)

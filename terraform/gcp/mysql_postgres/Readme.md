@@ -15,7 +15,7 @@ terraform plan
 terraform apply
 ```
 
-This deployment will deploy mysql and postgresql docker container in AWS compute.
+This deployment will deploy mysql and postgresql docker container in GCP compute.
 Terraform output is:
 
 ```bash
@@ -30,10 +30,18 @@ Terraform output is:
 # A06_mysqlsh_cli_access = "mysql shell: mysqlsh mysqluser@x.x.x.x:3306/demo"
 ```
 
-The deployment takes a short while till everything is up and running. Login via ssh in [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances) and open SSH connection: 
+The deployment takes a short while till everything is up and running. 
+We do have now, tweo DB compute services running
+![ GCP compute services](img/gcp_db_computes.png)
+
+
+
+Login via ssh in [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances) and open SSH connection. The complete setup of tge DB Services takes a while (~10-15 mins):
 
 ```bash
 # Go To docker and check if it is running
+sudo tail -f /var/log/messages
+# if you see Startup finished in 1.348s (kernel) + 4.086s (initrd) + 11min 485ms (userspace) = 11min 5.921s. then startup of compute is finished
 cd docker  
 sudo docker-compose ps 
 #  Name                Command              State                          Ports                       
@@ -48,11 +56,10 @@ root@mysql > cat /etc/mysql/conf.d/mysql.cnf
 # Log_bin = incremental back is enabled
 # log_bin           = mysql-bin
 exit;
-exit;
 ```
 
 A mySQL DB should have incremental backup enable. See above.
-You can use your mysql-Shell Desktop tool if installed:
+You can use your mysql-Shell Desktop tool if you have it installed:
 
 ```bash
 # Install mySQL Shell on mac os https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install-macos-quick.html
@@ -90,7 +97,7 @@ sudo docker exec mysql mysql -umysqluser -pmysqlpw demo -e "select * from accoun
 exit
 ```
 
-For PostgreSQL you can use psql cli tool if you have it installed:
+For PostgreSQL you can use psql cli tool if you have it installed on your desktop:
 
 ```bash
 # install psql on mac
@@ -131,9 +138,11 @@ customers=# \dt
 customers=# select * from users;
 # enter q to break the select
 customers-# \q
-exit
 ```
 
 DB Services MySQL and PostGeSQL are running.
+
+> [!IMPORTANT]
+> Be aware that all compute services are configured to run the last security patches. The update will be executed at startup. But we do not have Access CIDR ranges implemented like in AWS.
 
 back to [Deployment-Steps Overview](../README.md) or continue with the [MySQL CDC Connector Setup](../ccloud-source-mysql-cdc-connector/README.md )
