@@ -114,8 +114,8 @@ How to deploy the cloud resources:
    This is the main part of the Hands-on Workshop. We will transform, mask and more within the data processing part. Instruction Guide is [here](dataprocessingREADME.md).
 9. Sink new data to Sink services with deployed Sink Connectors (Storage, Bigquery). We will start with Storage. Follow [Storage Sink Connector setup](gcp-storage/README.md). 
 10. Then the setup for [BigQuery Sink Connector](), Coming soon.
-11. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, follow this [guide](advanced_recordgeneration.md)
-12. (optional): Migrate Connectors, this is very important to move self-managed connectors to fully-managed connectors, and also for replay. follow this [guide](connector_migration.md)
+11. (Optional): Do advanced stuff: Let the data flow by implementing database record generation, coming soon
+12. (optional): Migrate Connectors, this is very important to move self-managed connectors to fully-managed connectors, and also for replay. coming soon
 
 If you did implement all components then we run 5 Connectors (4 Source, 1 Sink). Bigquery connector coming soon.
 ![All connectors](img/all_connectors.png)
