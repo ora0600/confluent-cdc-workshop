@@ -87,4 +87,6 @@ We do have the following data model in Oracle21c XEPDB1 implemented. All these t
 Currently the database is not under heavy load. Without a connector running to Oracle DB the workload of the compute service is quite low.
 ![top on compute service](img/top_compute.png)
 
+Before starting the CDC Connector, you may want to investigate into [long running actions](LongRunningTransactions.md).
+
 back to [Deployment-Steps Overview](../README.md) or continue with the [Oracle CDC Connector](../ccloud-source-oracle-cdc-connector/README.md)
