@@ -291,7 +291,7 @@ What is achieved so far is:
 The connector would now wait till someone committed to open transactions. Please stop the terraform connector now:
 
 ```bash
-cd aws/ccloud-source-oracle-cdc-connector
+cd azure/ccloud-source-oracle-cdc-connector
 source .ccloud_env
 terraform destroy
 
