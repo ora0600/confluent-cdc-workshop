@@ -44,7 +44,7 @@ As the workload on the database increases, resources in the compute service also
 The first task the connector is taking a snapshot of all the tables we want to include in our cluster (see "table.inclusion.regex"), which is known as the initial load. For example, in the topic XEPDB1.ORDERMGMT.CONTACTS, we currently have 319 events.
 ![contact TOPIC](img/topic_contact_319.png)
 
-Please check the current dataset in our database. Go to [Google Cloud Console for Compute Engine](https://console.cloud.google.com/compute/instances) and open SSH Connection:
+Please check the current dataset in our database. Open SSH Connection:
 
 ```bash
 ssh -i ${TF_VAR_publicsshkey:0:(-4)} azureadmin@X.X.X.X
