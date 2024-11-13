@@ -426,6 +426,120 @@ What is happened after commit:
       - the second transaction was produced into redo and table topic because we do not reach the threshold of 5 minutes.
       - If you now wait 5 minutes for the commit of the third transaction, then this transaction will be dropped from connector buffer and never produced-
 
+**(optional)**: A last demonstration is run a pl/sql without commit, so we are doing inserts and do not commit and see what the monitor will tell us. For this sample I use the [migration Connector setup with a self-managed CDC Connector](../ccloud-source-oracle-cdc-connector/migrateConnectors/README.md). I change the setting to discard after 5 mins and will create 600 inserts in 10 minutes in one transaction. I run 3 Transaction in parallel. We will see how the buffer of the connector is progress.
+
+Start the self-managed connector:
+
+```bash 
+cd ccloud-source-oracle-cdc-connector/migrateConnectors
+source .env
+cp cdc_ccloud.json.template cdc_ccloud.json 
+# replace placeholder in cdc_ccloud.json with values from cat .env
+# change values for long transactions 
+              "use.transaction.begin.for.mining.session":         "true",
+              "log.mining.transaction.age.threshold.ms":          "300000",
+              "log.mining.transaction.threshold.breached.action": "discard",
+# Start the connect docker with monitoring
+docker-compose -f docker-compose-cdc-ccloud_new.yml up -d
+# Start the connector
+# Are connectors running?
+curl -s -X GET -H 'Content-Type: application/json' http://localhost:8083/connectors | jq
+# start connector with correct json config
+curl -s -X POST -H 'Content-Type: application/json' --data @cdc_ccloud.json http://localhost:8083/connectors | jq
+# Check status
+curl -s -X GET -H 'Content-Type: application/json' http://localhost:8083/connectors/CDC0/status | jq
+# If connector is running, do not delete, only if it fails, then delete and fix the error and start again
+# curl -s -X DELETE -H 'Content-Type: application/json' http://localhost:8083/connectors/CDC0 | jq
+```
+
+run order generator with out commit (Terminal 1):
+
+```bash
+ssh -i ${TF_VAR_publicsshkey:0:(-4)} azureadmin@X.X.X.X
+sudo docker exec -it oracle21c /bin/bash
+# we are still sysdba acting in XEPDB1
+sqlplus ordermgmt/kafka@XEPDB1
+-- If you do not execute install the procedures 
+SQL> @/opt/oracle/scripts/setup/06_data_generator.sql
+SQL> 
+begin
+   produce_orders_wo_commit;
+end;
+/
+```  
+
+open a second terminal 2:
+
+```bash
+ssh -i ${TF_VAR_publicsshkey:0:(-4)} azureadmin@X.X.X.X
+sudo docker exec -it oracle21c /bin/bash
+# we are still sysdba acting in XEPDB1
+sqlplus ordermgmt/kafka@XEPDB1
+-- If you do not execute install the procedures 
+SQL> @/opt/oracle/scripts/setup/06_data_generator.sql
+SQL> 
+begin
+   produce_orders_wo_commit;
+end;
+/
+```  
+
+open a third terminal 3:
+
+```bash
+ssh -i ${TF_VAR_publicsshkey:0:(-4)} azureadmin@X.X.X.X
+sudo docker exec -it oracle21c /bin/bash
+# we are still sysdba acting in XEPDB1
+sqlplus ordermgmt/kafka@XEPDB1
+-- If you do not execute install the procedures 
+SQL> @/opt/oracle/scripts/setup/06_data_generator.sql
+SQL> 
+begin
+   produce_orders_wo_commit;
+end;
+/
+```
+
+Before checking the Grafana Dashboard, please have a look in your database. How many transactions are still running?
+
+```SQL
+# Login into Compute Service
+ssh -i ${TF_VAR_publicsshkey:0:(-4)} azureadmin@X.X.X.X
+# Login into Oracle Docer
+sudo docker exec -it oracle21c /bin/bash
+# Connect as sysdba
+sqlplus sys/confluent123@XEPDB1 as sysdba
+SQL> select s.username, 
+       s.program, 
+       s.status as sstatus, 
+       t.status as tstatus,
+       t.START_SCN, 
+       t.START_TIME, 
+       o.sql_text
+  from v$session s, v$transaction t, v$open_cursor o 
+ where s.taddr = t.addr
+   and t.status='ACTIVE'
+   and o.sql_id = s.prev_sql_id;
+```
+
+You are right 3 transactions. 
+And now please check [Grafana CDC Dashboard](http://localhost:3000)
+You will see the buffer. If you do nothing the buffer is clean after 5 minutes.
+We do see 4 transaction in total in our connector buffer.
+![connector buffer monitoring](img/transactions_in_buffer.png)
+
+And surprise surprise all transaction are dropped from buffer after 5 min.
+![connector buffer monitoring](img/transaction_in_buffer_dropped.png)
+
+If you ready **stop self-managed setup**:
+
+```Bash
+# delete connector
+curl -s -X DELETE -H 'Content-Type: application/json' http://localhost:8083/connectors/CDC0 | jq
+# delete connnect docker
+docker-compose -f docker-compose-cdc-ccloud_new.yml down -v
+```
+
 I hope this simple example show the complexity of transaction handling in the DB. 
 
 If you will execute more details in the DB, please follow [Oracle Analysis Queries](OracleAnalysisQueries.md)
