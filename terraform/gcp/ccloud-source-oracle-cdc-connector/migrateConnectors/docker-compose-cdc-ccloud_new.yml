@@ -1,0 +1,97 @@
+version: "2.4"
+services:
+
+  connect:
+    image: confluentinc/cp-kafka-connect:7.7.0
+    hostname: connect
+    container_name: connect
+    restart: unless-stopped
+    ports:
+      #- "8083:8083"
+      - published: 8083
+        target: 8083
+      - published: 1234
+        target: 1234
+      #- "1234:1234"
+      #- "9101:9101"
+    environment:
+      #KAFKA_OPTS: "-javaagent:/opt/prometheus-jmx-exporter/jmx_prometheus_javaagent-0.18.0.jar=5083:/opt/prometheus-jmx-exporter/kafka-connect.yml"
+      #KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=connect -Dcom.sun.management.jmxremote.host=connect -Dcom.sun.management.jmxremote.port=1234 -Dcom.sun.management.jmxremote.rmi.port=1234 -Dcom.sun.management.jmxremote.local.only=false"
+      KAFKA_OPTS: "-javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent-1.0.1.jar=1234:/usr/share/jmx_exporter/kafka-connect.yml -Xmx256M -Xms256M"
+      #KAFKA_JMX_PORT: "9101"
+      #KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=9101 -Dcom.sun.management.jmxremote.rmi.port=9101 -Dcom.sun.management.jmxremote.local.only=false"
+      CONNECT_BOOTSTRAP_SERVERS: "${bootstrap}"
+      CONNECT_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: 'https'
+      CONNECT_SECURITY_PROTOCOL: 'SASL_SSL'
+      CONNECT_SASL_MECHANISM: 'PLAIN'
+      CONNECT_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${connectorkey}\" password=\"${connectorsecret}\";"
+      CONNECT_REQUEST_TIMEOUT_MS: 20000
+      CONNECT_RETRY_BACKOFF_MS: 500
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+      CONNECT_GROUP_ID: "connect-cdc-cluster"
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
+      CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "true"    
+      CONNECT_VALUE_CONVERTER_BASIC_AUTH_CREDENTIALS_SOURCE: USER_INFO
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_BASIC_AUTH_USER: "${srkey}:${srsecret}"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "${srrestpoint}"
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_PRODUCER_CLIENT_ID: "connect-worker-producer"
+      CONNECT_PRODUCER_BOOTSTRAP_SERVERS: "${bootstrap}"
+      CONNECT_PRODUCER_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: https
+      CONNECT_PRODUCER_SECURITY_PROTOCOL: 'SASL_SSL'
+      CONNECT_PRODUCER_SASL_MECHANISM: 'PLAIN'
+      CONNECT_PRODUCER_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${connectorkey}\" password=\"${connectorsecret}\";"
+      CONNECT_PRODUCER_REQUEST_TIMEOUT_MS: 20000
+      CONNECT_PRODUCER_RETRY_BACKOFF_MS: 500
+      CONNECT_CONSUMER_CLIENT_ID: "connect-worker-consumer"
+      CONNECT_CONSUMER_BOOTSTRAP_SERVERS: "${bootstrap}"
+      CONNECT_CONSUMER_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: 'https'
+      CONNECT_CONSUMER_SECURITY_PROTOCOL: 'SASL_SSL'
+      CONNECT_CONSUMER_SASL_MECHANISM: 'PLAIN'
+      CONNECT_CONSUMER_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${connectorkey}\" password=\"${connectorsecret}\";"
+      CONNECT_CONSUMER_REQUEST_TIMEOUT_MS: 20000
+      CONNECT_CONSUMER_RETRY_BACKOFF_MS: 500
+      CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
+      CONNECT_OFFSET_STORAGE_FILE_FILENAME: /tmp/connect3.offsets
+      CONNECT_OFFSET_STORAGE_TOPIC: connect1-offsets
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_OFFSET_STORAGE_PARTITIONS: 3      
+      CONNECT_CONFIG_STORAGE_TOPIC: connect1-configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_CONFIG_STORAGE_PARTITIONS: 3      
+      CONNECT_STATUS_STORAGE_TOPIC: connect1-status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_STATUS_STORAGE_PARTITIONS: 3      
+      CONNECT_CONFLUENT_TOPIC_BOOTSTRAP_SERVERS: "${bootstrap}"
+      CONNECT_CONFLUENT_TOPIC_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: 'https'
+      CONNECT_CONFLUENT_TOPIC_SECURITY_PROTOCOL: 'SASL_SSL'
+      CONNECT_CONFLUENT_TOPIC_SASL_MECHANISM: 'PLAIN'
+      CONNECT_CONFLUENT_TOPIC_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${connectorkey}\" password=\"${connectorsecret}\";"
+      CONNECT_PLUGIN_PATH: "/usr/share/cdc,/usr/share/java,/usr/share/confluent-hub-components"
+      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
+      CONNECT_TOPIC_CREATION_ENABLE: "true"
+      #CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.7.0.jar
+      #CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+      #CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+    volumes:
+    - ./jmx-exporter:/usr/share/jmx_exporter/
+    - ./confluent-hub-components:/usr/share/cdc      
+
+  prometheus:
+    image: prom/prometheus:latest #v2.11.1
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+
+  grafana:
+    image: grafana/grafana:latest #7.0.6
+    environment:
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+  
