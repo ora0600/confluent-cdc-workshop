@@ -1,0 +1,3 @@
+This project contains code in the following package copied from Debezium, which is available under
+the Apache License Version 2.0 (Please refer to the LICENSE-3rd-PARTIES.txt file for license details):
+src/main/java/io/confluent/connect/oracle/cdc/parser/dml
