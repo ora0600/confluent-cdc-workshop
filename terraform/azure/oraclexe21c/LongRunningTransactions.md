@@ -185,6 +185,9 @@ SQL> select s.username,
 # ORDERMGMT     sqlplus@1b9c9b0ec749 (TNS V1-V3)  INACTIVE ACTIVE    3632361   11/12/24 08:25:46  begin    update inventories set quantity=quantity-1 where pr   
 ```
 
+Your monitoring Dashboard [see migrateConnectors](../ccloud-source-oracle-cdc-connector/migrateConnectors/README.md) will show the buffer is acting right now. We have Transaction in buffer, the other are blocked and waiting to be executed.
+![connector buffer monitoring](img/longrunningtransactions_with_blocks.png)
+
 We have our 3 running transactions visible in `v$transaction`. But here is a main difference. If you execute the next SQL-statement you will see:
 
 ```SQL
