@@ -93,6 +93,7 @@ The architecture may seem complex at first, but the workshop is very well-prepar
 
 In the workshop we will use and show several features
 
+* Complete Data Streaming Platfrom demonstraion
 * Easy use of Cloud Services
 * Easy deployment with Terraform  
 * Data Streaming Platform in general with streaming pipelines implemented
@@ -105,6 +106,10 @@ In the workshop we will use and show several features
 * stream processing for transformation, enrichment, masking, De-duplication (Flink Actions) and others
 * Stream Lineage for data pipeline visualization
 * generative AI with openAI Models in Flink SQL
+* How to handle long running transactions (Oracle)?
+* Self-Managed Connector with Confluent Cloud and Monitoring
+* Self-Managed Connector to Fully-Managed Connector Migration
+* Monitoring Self-Managed Connect with Oracle CDC Connector (Grafana/Prometheus)
 
 ## License
 
