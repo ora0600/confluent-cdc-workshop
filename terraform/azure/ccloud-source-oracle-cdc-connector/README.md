@@ -3,6 +3,7 @@
 For the workshop, we will deploy only one connector; please refer to **Deploy Oracle CDC Source Connector** for more details. Based on our knowledge, the Oracle CDC Connector requires each connector to have its own unique redo log topic. This topic should not be shared between connectors, and each redo log topic contains only one partition. This setup creates a bottleneck for the throughput of a single connector. For example, a partition typically has a maximum throughput of 10 MB/s (such as in Confluent Cloud Dedicated Clusters). Therefore, customers needing more than 10 MB/s throughput will have to run multiple connectors against a single database or PDB. It is important to note that doing so will increase the load on the database.
 
 * ***(Optional)*** To address this situation, we have developed a demo where we create three connectors for a single database. For more information, see [Running 3 CDC Connectors](3connectors/README.md).
+* * ***(Optional)*** We do also prepared a self-managed Connector with Monitoring and used for a migration to a fully-managed Connector, see [migrate Connnector](migrateConnectors/README.md).
 
 ## Deploy Oracle CDC Source Connector
 
