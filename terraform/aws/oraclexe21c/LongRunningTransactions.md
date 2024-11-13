@@ -529,7 +529,7 @@ We do see 4 transaction in total in our connector buffer.
 ![connector buffer monitoring](img/transactions_in_buffer.png)
 
 And surprise surprise all transaction are dropped from buffer after 5 min.
-![connector buffer monitoring](img/ttransaction_in_buffer_dropped.png)
+![connector buffer monitoring](img/transaction_in_buffer_dropped.png)
 
 If you ready **stop self-managed setup**:
 
