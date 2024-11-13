@@ -23,7 +23,7 @@ as
  -- insert for 600 records in 600 s = 10 min
  for x in 1..600 loop
      insert into orders (customer_id, status, salesman_id ,order_date) values (dbms_random.value(1,300),'Pending',dbms_random.value(1,100),sysdate);
-     commit;
+     -- no commit; 
      DBMS_LOCK.sleep(seconds => 1); -- 1 seconds
  END LOOP;
 end;
