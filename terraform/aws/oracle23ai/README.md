@@ -71,11 +71,11 @@ ps -ef | grep ora
 lsnrctl status
 
 # Connect as sysdba
-sqlplus sys/confluent123@AI as sysdba
+sqlplus sys/confluent123@FREE as sysdba
 SQL> show pdbs
 # Show Archive Log enabled
 SQL> archive log list;
-SQL> connect ordermgmt/kafka@AIPDB1
+SQL> connect ordermgmt/kafka@FREEPDB1
 SQL> select * from cat;
 SQL> exit;
 exit;
@@ -84,7 +84,7 @@ exit;
 
 Port is always 1521 and HOST is the public IP address of the compute service.
 
-We do have the following data model in Oracle21c XEPDB1 implemented. All these tables get CDC-ed by the Oracle CDC Source Connector.
+We do have the following data model in Oracle23ai FREEPDB1 implemented. All these tables get CDC-ed by the Oracle CDC Source Connector.
 ![DB Model](img/oracle21c_ERM.png)
 
 Currently the database is not under heavy load. Without a connector running to Oracle DB the workload of the compute service is quite low.
