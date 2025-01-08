@@ -189,86 +189,11 @@ Add the complete offsets output from above API Call. In my case
 [
     {
       "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "CONTACTS"
+        "sidPdb": "XE.XEPDB1"
       },
       "offset": {
-        "rps": "-1",
-        "def": "CONTACT_ID INT64 key,FIRST_NAME STRING,LAST_NAME STRING,EMAIL STRING,PHONE STRING optional,CUSTOMER_ID INT64 optional",
-        "cscn": "3637996",
-        "rows": "319",
-        "scn": "3637996"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "REGIONS"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "REGION_ID INT64 key,REGION_NAME STRING",
-        "cscn": "3637985",
-        "rows": "4",
-        "scn": "3637985"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "INVENTORIES"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "PRODUCT_ID Decimal scale:0 key,WAREHOUSE_ID INT64 key,QUANTITY INT32",
-        "cscn": "3637980",
-        "rows": "1112",
-        "scn": "3637980"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "COUNTRIES"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "COUNTRY_ID STRING key,COUNTRY_NAME STRING,REGION_ID INT64 optional",
-        "cscn": "3637981",
-        "rows": "25",
-        "scn": "3637981"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "PRODUCT_CATEGORIES"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "CATEGORY_ID INT64 key,CATEGORY_NAME STRING",
-        "cscn": "3637979",
-        "rows": "5",
-        "scn": "3637979"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "EMPLOYEES"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "EMPLOYEE_ID INT64 key,FIRST_NAME STRING,LAST_NAME STRING,EMAIL STRING,PHONE STRING,HIRE_DATE Date,MANAGER_ID INT64 optional,JOB_TITLE STRING",
-        "cscn": "3637961",
-        "rows": "107",
-        "scn": "3637961"
+        "tablePlacement": "",
+        "scn": "3642464"
       }
     },
     {
@@ -279,94 +204,10 @@ Add the complete offsets output from above API Call. In my case
       },
       "offset": {
         "def": "ORDER_ID INT64 key,CUSTOMER_ID INT32,STATUS STRING,SALESMAN_ID INT32 optional,ORDER_DATE Date",
-        "rps": "0",
-        "cscn": "3645778",
+        "rps": "1",
+        "cscn": "3642392",
         "rows": "-1",
-        "scn": "3645777"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "PRODUCTS"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "PRODUCT_ID Decimal scale:0 key,PRODUCT_NAME STRING,DESCRIPTION STRING optional,STANDARD_COST FLOAT64 optional,LIST_PRICE FLOAT64 optional,CATEGORY_ID INT64",
-        "cscn": "3637974",
-        "rows": "288",
-        "scn": "3637974"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "CUSTOMERS"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "CUSTOMER_ID INT64 key,NAME STRING,ADDRESS STRING optional,WEBSITE STRING optional,CREDIT_LIMIT FLOAT64 optional",
-        "cscn": "3637927",
-        "rows": "319",
-        "scn": "3637927"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "NOTES"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "NOTE_ID INT64 key,NOTE BYTES CLOB optional",
-        "cscn": "3637997",
-        "rows": "5",
-        "scn": "3637997"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "WAREHOUSES"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "WAREHOUSE_ID INT64 key,WAREHOUSE_NAME STRING optional,LOCATION_ID INT64 optional",
-        "cscn": "3637959",
-        "rows": "9",
-        "scn": "3637959"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "ORDER_ITEMS"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "ORDER_ID INT64 key,ITEM_ID INT64 key,PRODUCT_ID Decimal scale:0,QUANTITY FLOAT64,UNIT_PRICE FLOAT64",
-        "cscn": "3637998",
-        "rows": "665",
-        "scn": "3637998"
-      }
-    },
-    {
-      "partition": {
-        "schema": "ORDERMGMT",
-        "catalog": "XEPDB1",
-        "table": "LOCATIONS"
-      },
-      "offset": {
-        "rps": "-1",
-        "def": "LOCATION_ID INT64 key,ADDRESS STRING,POSTAL_CODE STRING optional,CITY STRING optional,STATE STRING optional,COUNTRY_ID STRING optional",
-        "cscn": "3637978",
-        "rows": "23",
-        "scn": "3637978"
+        "scn": "3642391"
       }
     }
   ]
@@ -374,20 +215,6 @@ Add the complete offsets output from above API Call. In my case
 
 It looks like the following image (we need the `[..]` content) and click continue:
 ![Oracle CDC Connector config 3](img/oracle_cdc_config3.png)
-
-I dropped this piece from offset result:
-
-```bash
-{
-      "partition": {
-        "sidPdb": "XE.XEPDB1"
-      },
-      "offset": {
-        "tablePlacement": "",
-        "scn": "3645846"
-      }
-    },
-```
 
 Start with 1 Task:
 ![Oracle CDC Connector config 4](img/oracle_cdc_config4.png)
