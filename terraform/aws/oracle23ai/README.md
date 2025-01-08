@@ -64,7 +64,7 @@ CTRL+C to leave tail
 
 # Execute into container
 sudo docker exec -it oracle23ai /bin/bash
-# Check if oracle Processes run XE_xxxx_XE
+# Check if oracle Processes run db_xxxx_FREE
 ps -ef | grep ora
 
 # Check status listener
