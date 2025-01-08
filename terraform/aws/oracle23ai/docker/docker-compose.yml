@@ -4,8 +4,6 @@ services:
     container_name: oracle23ai
     image: container-registry.oracle.com/database/free:23.5.0.0
       - name=oracle23ai
-      - ORACLE_SID=AI
-      - ORACLE_PDB=AIPDB1
       - ORACLE_PWD=confluent123
       - ORACLE_MEM=4000
       - ENABLE_ARCHIVELOG=true
@@ -15,5 +13,3 @@ services:
       - ./scripts:/opt/oracle/scripts/setup # Prepare DB for Confluent CDC and install sample data
     ports:
       - 1521:1521
-      - 8080:8080
-      - 5500:5500
