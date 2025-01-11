@@ -49,12 +49,6 @@
               "snapshot.row.fetch.size":                      "2000",
               "redo.log.row.fetch.size":                      "5000",
               "oracle.validation.result.fetch.size":          "5000",
-              "output.before.state.field":                    "BEFORE_COMMAND",
-              "output.table.name.field":                      "",
-              "output.scn.field":                             "",
-              "output.username.field":                        "",
-              "output.undo.field":                            "",
-              "redo.log.row.poll.fields.exclude":             "SESSION_INFO,OS_USERNAME,MACHINE_NAME",
               "enable.metrics.collection":                    "true"
             }
 }
