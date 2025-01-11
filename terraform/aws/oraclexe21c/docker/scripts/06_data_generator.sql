@@ -7,7 +7,7 @@ as
  begin
  -- insert for 5 hours data into orders, every 5 seconds
  for x in 1..3600 loop
-     insert into orders (customer_id, status, salesman_id ,order_date) values (dbms_random.value(1,300),'Pending',dbms_random.value(1,100),sysdate, USERENV('COMMITSCN'));
+     insert into orders (customer_id, status, salesman_id ,order_date,commitscn) values (dbms_random.value(1,300),'Pending',dbms_random.value(1,100),sysdate, USERENV('COMMITSCN'));
      commit;
      DBMS_LOCK.sleep(seconds => 5); -- 5 seconds
  END LOOP;
@@ -22,7 +22,7 @@ as
  begin
  -- insert for 600 records in 600 s = 10 min
  for x in 1..600 loop
-     insert into orders (customer_id, status, salesman_id ,order_date) values (dbms_random.value(1,300),'Pending',dbms_random.value(1,100),sysdate, USERENV('COMMITSCN'));
+     insert into orders (customer_id, status, salesman_id ,order_date,commitscn) values (dbms_random.value(1,300),'Pending',dbms_random.value(1,100),sysdate, USERENV('COMMITSCN'));
      -- no commit; 
      DBMS_LOCK.sleep(seconds => 1); -- 1 seconds
  END LOOP;
