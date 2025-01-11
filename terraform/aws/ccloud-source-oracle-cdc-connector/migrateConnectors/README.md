@@ -183,6 +183,8 @@ Enter all Oracle data and click continue.
 Add Config part2 and click on the advanced link
 ![Oracle CDC Connector config 2](img/oracle_cdc_config2.png)
 
+I did use `current` as parameter for start.from property. We do have the initial load already.
+
 Add the complete offsets output from above API Call. In my case
 
 ```bash
