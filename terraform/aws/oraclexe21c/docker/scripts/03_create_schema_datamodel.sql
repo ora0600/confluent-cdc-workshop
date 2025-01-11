@@ -130,7 +130,6 @@ CREATE TABLE orders
     status      VARCHAR( 20 ) NOT NULL ,
     salesman_id NUMBER( 6, 0 )         , -- fk
     order_date  DATE NOT NULL          ,
-    commitscn VARCHAR2(50),
     CONSTRAINT fk_orders_customers 
       FOREIGN KEY( customer_id )
       REFERENCES customers( customer_id )
