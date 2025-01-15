@@ -109,5 +109,20 @@ We do have full logging configured in the database. If you want to play later wi
 
 > [!TIP]
 > We enabled full logging on the complete database in our workshop. It is better for the database performance that you set supplemental logging for the specific tables only (in our case 13 Tables) and not for the whole database.
+>
+> ## Optional Task: Use SMT to mask USERNAME
+
+You can also use SMT with CDC Connector. E.g. you want to mask personalized data. But keep in mind SMT will slow down the connector.
+To add a SMT just change via the UI and add an SMT.
+
+* Transform_Type: MaskField$Value
+* fields: username
+* replacement: ******
+
+![ SMT Setup ](img/mask_smt.png)
+
+After apply changes the username will be masked in table topic.
+
+![ masked username ](img/masked_username.png)
 
 back to [Deployment-Steps Overview](../README.md) or continue with the other [DB Services MySQL and PostGreSQL](../mysql_postgres/Readme.md)
