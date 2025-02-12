@@ -73,7 +73,7 @@ However, **you are all invited to contribute your own ideas**.
 
 * [install](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) terraform (my version v.1.6.6)
 * You will find additional information for preparation in the relevant guides for the respective cloud providers ([**AWS**](terraform/aws/README.md),[**GCP**](terraform/gcp/README.md), [**Azure**](terraform/azure/README.md)).
-* Next action is: clone the github repo onto you Desktop and start:
+* Next action is: clone the github repo onto your Desktop and start:
 
 ```bash
 git clone https://github.com/ora0600/confluent-cdc-workshop.git
